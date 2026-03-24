@@ -15,30 +15,29 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--black);dir
 .stage-tab{flex:1;padding:12px 20px;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;transition:all .15s;font-family:'Nunito',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px}
 .stage-tab.active{color:var(--black);border-bottom-color:var(--magenta)}
 .stage-tab .num{width:20px;height:20px;border-radius:50%;border:1.5px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:10px}
-#stageA{display:flex;height:calc(100vh - 45px)}
-#stageB{display:none;height:calc(100vh - 45px)}
-.panel{width:340px;flex-shrink:0;border-right:1.5px solid var(--border);overflow-y:auto;background:var(--bg);display:flex;flex-direction:column}
-.panel-header{padding:24px 24px 18px;border-bottom:1.5px solid var(--border)}
-.panel-header h1{font-size:28px;font-weight:900;color:var(--black);line-height:1.05;letter-spacing:-.02em;text-transform:uppercase}
+
+/* PANEL */
+.panel{width:300px;flex-shrink:0;border-right:1.5px solid var(--border);overflow-y:auto;background:var(--bg);display:flex;flex-direction:column}
+.panel-header{padding:20px 20px 14px;border-bottom:1.5px solid var(--border)}
+.panel-header h1{font-size:24px;font-weight:900;color:var(--black);line-height:1.05;letter-spacing:-.02em;text-transform:uppercase}
 .panel-header h1 em{color:var(--magenta);font-style:normal}
-.phase-tag{display:block;font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:6px;padding-top:6px;border-top:1.5px solid var(--border)}
-.panel-body{flex:1}
-.section{border-bottom:1.5px solid var(--border);padding:14px 24px}
+.phase-tag{display:block;font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:5px;padding-top:5px;border-top:1.5px solid var(--border)}
+.section{border-bottom:1.5px solid var(--border);padding:12px 20px}
 .sec-label{font-size:9px;font-weight:800;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;margin-bottom:10px}
 .fr{margin-bottom:12px}
 .fr:last-child{margin-bottom:0}
 .ft{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:2px}
-.fn{font-size:13px;font-weight:700;color:var(--black)}
-.fv{font-size:13px;font-weight:900;color:var(--magenta)}
+.fn{font-size:12px;font-weight:700;color:var(--black)}
+.fv{font-size:12px;font-weight:900;color:var(--magenta)}
 .fd{font-size:11px;color:var(--muted);margin-bottom:5px;line-height:1.4;font-weight:500}
 input[type=range]{width:100%;-webkit-appearance:none;height:2px;background:var(--black);border-radius:0;outline:none}
 input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;background:var(--magenta);border-radius:50%;cursor:pointer;border:2px solid var(--black)}
 .birth-wrap{position:relative}
-.avg-tip{position:absolute;top:-22px;font-size:10px;font-weight:800;color:var(--magenta);white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .1s;background:var(--bg);border:1.5px solid var(--magenta);padding:2px 7px;letter-spacing:.04em}
+.avg-tip{position:absolute;top:-22px;font-size:10px;font-weight:800;color:var(--magenta);white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .1s;background:var(--bg);border:1.5px solid var(--magenta);padding:2px 7px;}
 .avg-tip.show{opacity:1}
 .avg-line{position:absolute;top:2px;width:1.5px;background:var(--magenta);height:14px;pointer-events:none;opacity:0;transition:opacity .1s}
 .avg-line.show{opacity:1}
-.side-labels{display:flex;justify-content:space-between;font-size:10px;font-weight:800;margin-bottom:5px;letter-spacing:.04em}
+.side-labels{display:flex;justify-content:space-between;font-size:10px;font-weight:800;margin-bottom:5px;}
 .lc{color:#C0392B}.lo{color:#2471A3}
 .track-wrap{position:relative;height:16px;margin-bottom:3px}
 .track-bg{position:absolute;top:3px;left:0;right:0;height:10px;border-radius:0;background:var(--gray);overflow:hidden}
@@ -52,8 +51,8 @@ input.sr{position:absolute;width:100%;top:0;left:0;height:16px;opacity:0;cursor:
 .tick-row{display:flex;justify-content:space-between;font-size:9px;color:var(--muted);margin-bottom:5px;position:relative;font-weight:800;letter-spacing:.05em;text-transform:uppercase}
 .tick-mid{position:absolute;left:50%;transform:translateX(-50%);color:var(--black)}
 .val-row{display:flex;align-items:center;justify-content:center;gap:5px;margin-bottom:5px}
-.vc{font-size:14px;font-weight:900;color:#C0392B}
-.vo{font-size:14px;font-weight:900;color:#2471A3}
+.vc{font-size:13px;font-weight:900;color:#C0392B}
+.vo{font-size:13px;font-weight:900;color:#2471A3}
 .vsep{font-size:11px;color:var(--muted);font-weight:700}
 .status-pill{display:flex;align-items:center;gap:5px;padding:3px 10px;font-size:10px;font-weight:800;margin:0 auto;width:fit-content;letter-spacing:.06em;text-transform:uppercase;border:1.5px solid currentColor}
 .sp-ok{color:#1E8449;background:#D5F5E3}
@@ -66,76 +65,83 @@ input.sr{position:absolute;width:100%;top:0;left:0;height:16px;opacity:0;cursor:
 .ds.active .ds-label{color:#fff}
 .ds-range{font-size:10px;color:var(--muted);margin-top:1px;font-weight:500}
 .ds.active .ds-range{color:rgba(255,255,255,.5)}
-.focus-note{font-size:11px;color:var(--muted);margin-bottom:8px;line-height:1.4;font-weight:500}
-.tg{display:flex;gap:6px;flex-wrap:wrap}
-.tb{font-size:11px;font-weight:800;padding:4px 12px;border:1.5px solid var(--border);background:var(--bg);color:var(--muted);cursor:pointer;transition:all .1s;letter-spacing:.06em;text-transform:uppercase;font-family:'Nunito',sans-serif}
+.tg{display:flex;gap:5px;flex-wrap:wrap}
+.tb{font-size:11px;font-weight:800;padding:4px 10px;border:1.5px solid var(--border);background:var(--bg);color:var(--muted);cursor:pointer;transition:all .1s;letter-spacing:.06em;text-transform:uppercase;font-family:'Nunito',sans-serif}
 .tb.on{background:var(--black);color:#fff}
-.panel-footer{padding:14px 24px;border-top:1.5px solid var(--border)}
+.panel-footer{padding:12px 20px;border-top:1.5px solid var(--border)}
 .btn{width:100%;padding:12px;font-size:13px;font-weight:900;background:var(--magenta);color:#fff;border:1.5px solid var(--black);cursor:pointer;font-family:'Nunito',sans-serif;letter-spacing:.08em;text-transform:uppercase;transition:all .1s}
 .btn:hover{background:#C4186F}
-.results{flex:1;overflow-y:auto;padding:28px;background:var(--bg)}
+
+/* RESULTS */
+.results{flex:1;overflow-y:auto;padding:24px;background:var(--bg)}
 .ph{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:var(--muted);text-align:center;gap:12px}
-.ph-big{font-size:56px;font-weight:900;color:var(--gray);line-height:1;text-transform:uppercase;letter-spacing:-.02em}
+.ph-big{font-size:52px;font-weight:900;color:var(--gray);line-height:1;text-transform:uppercase;letter-spacing:-.02em}
 .ph p{font-size:12px;line-height:1.7;max-width:240px;font-weight:600;color:var(--muted)}
-.rtitle{font-size:9px;font-weight:800;color:var(--muted);margin-bottom:16px;letter-spacing:.12em;text-transform:uppercase}
-.city-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:0;border-top:1.5px solid var(--border);border-right:1.5px solid var(--border)}
-.cc{background:var(--white);border-bottom:1.5px solid var(--border);border-left:1.5px solid var(--border);padding:16px 18px;cursor:pointer;transition:background .1s;position:relative}
+.rtitle{font-size:9px;font-weight:800;color:var(--muted);margin-bottom:14px;letter-spacing:.12em;text-transform:uppercase}
+.city-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:0;border-top:1.5px solid var(--border);border-right:1.5px solid var(--border)}
+.cc{background:var(--white);border-bottom:1.5px solid var(--border);border-left:1.5px solid var(--border);padding:14px 16px;cursor:pointer;transition:background .1s;position:relative}
 .cc:hover{background:var(--bg)}
 .cc.focused{background:var(--mg-light)}
-.cc-rank{position:absolute;top:14px;right:14px;font-size:10px;font-weight:900;color:var(--muted);letter-spacing:.04em}
-.focus-tag{font-size:9px;font-weight:800;letter-spacing:.08em;padding:2px 6px;background:var(--magenta);color:#fff;display:inline-block;margin-bottom:5px;text-transform:uppercase}
-.cname{font-size:17px;font-weight:900;color:var(--black);margin-bottom:1px;line-height:1.1;padding-right:28px}
-.cmeta{font-size:11px;color:var(--muted);margin-bottom:10px;font-weight:600}
+.cc-rank{position:absolute;top:12px;right:12px;font-size:10px;font-weight:900;color:var(--muted)}
+.focus-tag{font-size:9px;font-weight:800;letter-spacing:.08em;padding:2px 6px;background:var(--magenta);color:#fff;display:inline-block;margin-bottom:4px;text-transform:uppercase}
+.cname{font-size:16px;font-weight:900;color:var(--black);margin-bottom:1px;line-height:1.1;padding-right:26px}
+.cmeta{font-size:11px;color:var(--muted);margin-bottom:8px;font-weight:600}
 .score-bar-wrap{height:2px;background:var(--gray);margin-bottom:3px}
 .score-bar{height:2px;background:var(--magenta)}
-.score-row{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:8px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
-.score-val{font-weight:900;color:var(--black);font-size:12px}
+.score-row{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:7px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.score-val{font-weight:900;color:var(--black);font-size:11px}
 .pol-bar{height:6px;overflow:hidden;display:flex;margin-bottom:2px}
 .pol-c{background:#E74C3C;height:100%}
 .pol-o{background:#2E86C1;height:100%}
-.pol-nums{display:flex;justify-content:space-between;font-size:10px;margin-bottom:8px;font-weight:800}
+.pol-nums{display:flex;justify-content:space-between;font-size:10px;margin-bottom:7px;font-weight:800}
 .pnc{color:#C0392B}.pno{color:#2471A3}
-.cparams{display:grid;grid-template-columns:1fr 1fr;gap:3px}
+.cparams{display:grid;grid-template-columns:1fr 1fr;gap:3px;margin-bottom:8px}
 .cp{background:var(--bg);padding:5px 7px;border:1px solid var(--gray)}
 .cpl{font-size:9px;font-weight:800;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;margin-bottom:1px}
-.cpv{font-size:12px;font-weight:900;color:var(--black)}
-.go-btn{margin-top:10px;width:100%;padding:8px;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;border:1.5px solid var(--border);background:transparent;cursor:pointer;font-family:'Nunito',sans-serif;color:var(--black);transition:all .1s}
-.go-btn:hover{background:var(--black);color:#fff}
+.cpv{font-size:11px;font-weight:900;color:var(--black)}
+.map-btn{width:100%;padding:8px;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;border:1.5px solid var(--border);background:transparent;cursor:pointer;font-family:'Nunito',sans-serif;color:var(--black);transition:all .1s}
+.map-btn:hover{background:var(--magenta);color:#fff;border-color:var(--magenta)}
+.has-map{border-left:3px solid var(--magenta)!important}
 .no-res{text-align:center;padding:3rem;color:var(--muted);font-size:13px;font-weight:700}
-/* STAGE B */
-#stageB{display:none}
-.map-wrap{flex:1;position:relative}
-#map{width:100%;height:100%}
-.map-sidebar{width:300px;flex-shrink:0;border-right:1.5px solid var(--border);background:var(--bg);display:flex;flex-direction:column;overflow:hidden}
-.msb-header{padding:16px 20px;border-bottom:1.5px solid var(--border)}
-.msb-city{font-size:20px;font-weight:900;color:var(--black);text-transform:uppercase;letter-spacing:-.01em}
+
+/* STAGE B MAP */
+.map-sidebar{width:280px;flex-shrink:0;border-right:1.5px solid var(--border);background:var(--bg);display:flex;flex-direction:column;overflow:hidden}
+.msb-header{padding:14px 16px;border-bottom:1.5px solid var(--border)}
+.msb-city{font-size:18px;font-weight:900;color:var(--black);text-transform:uppercase;letter-spacing:-.01em}
 .msb-desc{font-size:11px;color:var(--muted);margin-top:2px;font-weight:600}
-.msb-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border-bottom:1.5px solid var(--border)}
-.mstat{padding:10px 12px;border-right:1.5px solid var(--border)}
+.msb-stats{display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1.5px solid var(--border)}
+.mstat{padding:8px 10px;border-right:1.5px solid var(--border)}
 .mstat:last-child{border-right:none}
 .mstat-l{font-size:9px;font-weight:800;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:2px}
-.mstat-v{font-size:14px;font-weight:900;color:var(--black)}
-.layer-tabs{display:flex;border-bottom:1.5px solid var(--border)}
-.ltab{flex:1;padding:10px 4px;font-size:10px;font-weight:800;color:var(--muted);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;letter-spacing:.06em;text-transform:uppercase;font-family:'Nunito',sans-serif;transition:all .15s}
+.mstat-v{font-size:13px;font-weight:900;color:var(--black)}
+.layer-tabs{display:flex;border-bottom:1.5px solid var(--border);overflow-x:auto}
+.ltab{flex:1;min-width:fit-content;padding:9px 6px;font-size:10px;font-weight:800;color:var(--muted);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;letter-spacing:.05em;text-transform:uppercase;font-family:'Nunito',sans-serif;transition:all .15s;white-space:nowrap}
 .ltab.active{color:var(--black);border-bottom-color:var(--magenta)}
-.layer-content{flex:1;overflow-y:auto;padding:12px 16px}
-.litem{padding:10px 12px;border:1.5px solid var(--border);margin-bottom:6px;cursor:pointer;transition:all .1s;background:var(--white)}
+.layer-content{flex:1;overflow-y:auto;padding:10px 14px}
+.litem{padding:9px 11px;border:1.5px solid var(--border);margin-bottom:5px;cursor:pointer;transition:all .1s;background:var(--white)}
 .litem:hover{background:var(--bg)}
 .litem-name{font-size:12px;font-weight:800;color:var(--black);margin-bottom:2px}
 .litem-sub{font-size:11px;color:var(--muted);font-weight:500;line-height:1.4}
-.opt-item{padding:10px 12px;border:1.5px solid var(--magenta);margin-bottom:6px;cursor:pointer;background:var(--white);transition:all .1s}
+.opt-item{padding:10px 11px;border:1.5px solid var(--magenta);margin-bottom:5px;cursor:pointer;background:var(--white);transition:all .1s}
 .opt-item:hover{background:var(--mg-light)}
-.opt-name{font-size:12px;font-weight:900;color:var(--magenta);margin-bottom:3px;text-transform:uppercase;letter-spacing:.04em}
+.opt-name{font-size:11px;font-weight:900;color:var(--magenta);margin-bottom:3px;text-transform:uppercase;letter-spacing:.04em}
 .opt-reason{font-size:11px;color:var(--muted);font-weight:500;line-height:1.5}
-.city-sw{padding:10px 16px;border-top:1.5px solid var(--border);display:flex;gap:5px;flex-wrap:wrap}
-.csw{font-size:10px;font-weight:800;padding:4px 9px;border:1.5px solid var(--border);background:var(--bg);color:var(--muted);cursor:pointer;font-family:'Nunito',sans-serif;letter-spacing:.06em;text-transform:uppercase;transition:all .1s}
+.layer-toggle-bar{padding:8px 14px;border-bottom:1.5px solid var(--border);display:flex;gap:4px;flex-wrap:wrap}
+.ltgl{font-size:10px;font-weight:800;padding:3px 8px;border:1.5px solid var(--border);background:var(--bg);color:var(--muted);cursor:pointer;font-family:'Nunito',sans-serif;letter-spacing:.05em;text-transform:uppercase;transition:all .1s}
+.ltgl.on{color:#fff}
+.city-sw{padding:8px 14px;border-top:1.5px solid var(--border);display:flex;gap:4px;flex-wrap:wrap}
+.csw{font-size:10px;font-weight:800;padding:4px 8px;border:1.5px solid var(--border);background:var(--bg);color:var(--muted);cursor:pointer;font-family:'Nunito',sans-serif;text-transform:uppercase;transition:all .1s}
 .csw.active{background:var(--black);color:#fff;border-color:var(--black)}
-.back-btn{padding:12px 16px;border-top:1.5px solid var(--border);font-size:10px;font-weight:800;color:var(--muted);cursor:pointer;border-bottom:none;border-right:none;border-left:none;background:none;font-family:'Nunito',sans-serif;text-align:left;letter-spacing:.08em;text-transform:uppercase;transition:color .15s;width:100%}
+.back-btn{padding:10px 14px;border-top:1.5px solid var(--border);font-size:10px;font-weight:800;color:var(--muted);cursor:pointer;border-bottom:none;border-right:none;border-left:none;background:none;font-family:'Nunito',sans-serif;text-align:left;letter-spacing:.08em;text-transform:uppercase;width:100%}
 .back-btn:hover{color:var(--black)}
-.leaflet-tile{filter:grayscale(0.3) contrast(1.05)}
+.map-wrap{flex:1;position:relative}
+#map{width:100%;height:100%}
+.govmap-btn{position:absolute;bottom:12px;right:12px;z-index:1000;padding:7px 12px;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;background:var(--black);color:#fff;border:none;cursor:pointer;font-family:'Nunito',sans-serif}
+.govmap-btn:hover{background:var(--magenta)}
 </style>
 </head>
 <body>
+
 <div class="stage-bar">
   <button class="stage-tab active" id="tabA" onclick="switchStage('A')">
     <span class="num">A</span> National Analysis
@@ -146,7 +152,7 @@ input.sr{position:absolute;width:100%;top:0;left:0;height:16px;opacity:0;cursor:
 </div>
 
 <!-- STAGE A -->
-<div id="stageA">
+<div id="stageA" style="display:flex;height:calc(100vh - 45px)">
   <div class="panel">
     <div class="panel-header">
       <h1>Influence<br><em>Network</em></h1>
@@ -209,15 +215,15 @@ input.sr{position:absolute;width:100%;top:0;left:0;height:16px;opacity:0;cursor:
       </div>
       <div class="section" style="border-bottom:none">
         <div class="sec-label">Focus</div>
-        <div class="focus-note">Select city type to prioritize — all cities still appear</div>
-        <div class="tg" id="tg-type">
+        <div class="fd">Prioritize in scoring — all cities still appear</div>
+        <div class="tg" id="tg-type" style="margin-bottom:10px">
           <button class="tb" data-v="jewish">Jewish</button>
           <button class="tb" data-v="mixed">Mixed</button>
         </div>
-        <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--gray)">
-          <div style="font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px">Include Arab Cities</div>
-          <div style="font-size:11px;color:var(--muted);font-weight:500;margin-bottom:7px;line-height:1.4">Arab cities are excluded by default. Enable to include them.</div>
-          <button class="tb" id="arab-btn" data-v="arab" onclick="toggleArab(this)">+ Arab Cities</button>
+        <div style="border-top:1px solid var(--gray);padding-top:10px">
+          <div class="sec-label" style="margin-bottom:6px">Arab Cities</div>
+          <div class="fd" style="margin-bottom:7px">Excluded by default. Enable to include.</div>
+          <button class="tb" id="arab-btn" onclick="toggleArab(this)">+ Include Arab Cities</button>
         </div>
       </div>
     </div>
@@ -239,19 +245,24 @@ input.sr{position:absolute;width:100%;top:0;left:0;height:16px;opacity:0;cursor:
     <div class="map-sidebar">
       <div class="msb-header">
         <div class="msb-city" id="mb-city">—</div>
-        <div class="msb-desc" id="mb-desc">—</div>
+        <div class="msb-desc" id="mb-desc">Select a city</div>
       </div>
       <div class="msb-stats" id="mb-stats"></div>
+      <div class="layer-toggle-bar" id="layerToggles"></div>
       <div class="layer-tabs">
-        <button class="ltab active" onclick="showLayer(this,'optimal')">★ Optimal</button>
-        <button class="ltab" onclick="showLayer(this,'transit')">Transit</button>
-        <button class="ltab" onclick="showLayer(this,'public')">Public</button>
+        <button class="ltab active" onclick="showTab(this,'sites')">★ Sites</button>
+        <button class="ltab" onclick="showTab(this,'transit')">Transit</button>
+        <button class="ltab" onclick="showTab(this,'public')">Public</button>
+        <button class="ltab" onclick="showTab(this,'axes')">Axes</button>
       </div>
       <div class="layer-content" id="layerContent"></div>
       <div class="city-sw" id="citySw"></div>
       <button class="back-btn" onclick="switchStage('A')">← Back to Search</button>
     </div>
-    <div class="map-wrap"><div id="map"></div></div>
+    <div class="map-wrap">
+      <div id="map"></div>
+      <button class="govmap-btn" id="govmapBtn" onclick="openGovmap()">Open in GOVMAP ↗</button>
+    </div>
   </div>
 </div>
 
@@ -285,41 +296,112 @@ const CITIES=[
   {name:"Karmiel",pop:47000,density:3600,type:"jewish",birthRate:2.5,youthPct:26,coalPct:49,dist:"North",lat:32.915,lng:35.298},
   {name:"Nahariya",pop:60000,density:4200,type:"jewish",birthRate:2.4,youthPct:24,coalPct:48,dist:"North",lat:33.005,lng:35.097},
   {name:"Kiryat Gat",pop:62000,density:3600,type:"jewish",birthRate:3.1,youthPct:30,coalPct:64,dist:"South",lat:31.610,lng:34.764},
-  {name:"Kiryat Bialik",pop:58000,density:5100,type:"jewish",birthRate:2.2,youthPct:22,coalPct:46,dist:"Haifa",lat:32.834,lng:35.085},
-  {name:"Kiryat Motzkin",pop:46000,density:6800,type:"jewish",birthRate:2.3,youthPct:23,coalPct:44,dist:"Haifa",lat:32.836,lng:35.074},
   {name:"Nes Ziona",pop:59000,density:5200,type:"jewish",birthRate:2.5,youthPct:25,coalPct:46,dist:"Center",lat:31.930,lng:34.798},
   {name:"Ra'anana",pop:80000,density:4800,type:"jewish",birthRate:2.4,youthPct:25,coalPct:41,dist:"Center",lat:32.184,lng:34.871},
   {name:"Givatayim",pop:60000,density:14000,type:"jewish",birthRate:1.9,youthPct:19,coalPct:19,dist:"Center",lat:32.070,lng:34.813},
   {name:"Yavne",pop:52000,density:4600,type:"jewish",birthRate:2.8,youthPct:28,coalPct:55,dist:"Center",lat:31.877,lng:34.741},
   {name:"Sderot",pop:30000,density:3400,type:"jewish",birthRate:3.0,youthPct:30,coalPct:68,dist:"South",lat:31.524,lng:34.597},
   {name:"Netivot",pop:35000,density:2800,type:"jewish",birthRate:3.5,youthPct:35,coalPct:74,dist:"South",lat:31.417,lng:34.588},
-  {name:"Taybe",pop:46000,density:5600,type:"arab",birthRate:3.4,youthPct:37,coalPct:null,dist:"Center",lat:32.325,lng:35.002},
-  {name:"Qalansawe",pop:27000,density:6200,type:"arab",birthRate:3.5,youthPct:39,coalPct:null,dist:"Center",lat:32.284,lng:34.996},
-  {name:"Tira",pop:30000,density:5400,type:"arab",birthRate:3.3,youthPct:37,coalPct:null,dist:"Center",lat:32.233,lng:34.956},
-  {name:"Shefa-'Amr",pop:43000,density:2800,type:"arab",birthRate:3.4,youthPct:37,coalPct:null,dist:"North",lat:32.806,lng:35.171},
-  {name:"Kafr Qasim",pop:25000,density:4900,type:"arab",birthRate:3.7,youthPct:40,coalPct:null,dist:"Center",lat:32.116,lng:34.976},
-  {name:"Migdal HaEmek",pop:27000,density:2900,type:"jewish",birthRate:2.9,youthPct:29,coalPct:58,dist:"North",lat:32.675,lng:35.239},
-  {name:"Eilat",pop:52000,density:1900,type:"jewish",birthRate:2.5,youthPct:25,coalPct:53,dist:"South",lat:29.558,lng:34.952},
-  {name:"Tiberias",pop:45000,density:2700,type:"jewish",birthRate:3.0,youthPct:29,coalPct:62,dist:"North",lat:32.794,lng:35.530},
-  {name:"Safed",pop:34000,density:2500,type:"mixed",birthRate:3.2,youthPct:31,coalPct:60,dist:"North",lat:32.965,lng:35.496},
-  {name:"Rosh HaAyin",pop:58000,density:4800,type:"jewish",birthRate:3.1,youthPct:30,coalPct:59,dist:"Center",lat:32.096,lng:34.957},
-  {name:"Or Yehuda",pop:40000,density:7100,type:"jewish",birthRate:2.5,youthPct:25,coalPct:54,dist:"Center",lat:32.029,lng:34.857},
-  {name:"Givat Shmuel",pop:29000,density:7900,type:"jewish",birthRate:2.3,youthPct:23,coalPct:43,dist:"Center",lat:32.079,lng:34.852},
-  {name:"Hod HaSharon",pop:57000,density:3200,type:"jewish",birthRate:2.4,youthPct:24,coalPct:43,dist:"Center",lat:32.151,lng:34.888},
-  {name:"Kiryat Ata",pop:58000,density:4400,type:"jewish",birthRate:2.6,youthPct:26,coalPct:55,dist:"Haifa",lat:32.807,lng:35.108},
-  {name:"Ofakim",pop:37000,density:2200,type:"jewish",birthRate:3.4,youthPct:33,coalPct:78,dist:"South",lat:31.313,lng:34.621},
-  {name:"Dimona",pop:37000,density:2100,type:"jewish",birthRate:3.1,youthPct:30,coalPct:66,dist:"South",lat:31.068,lng:35.033},
+  {name:"Rehovot",pop:145000,density:5500,type:"jewish",birthRate:2.8,youthPct:27,coalPct:51,dist:"Center",lat:31.893,lng:34.811},
+  {name:"Kfar Saba",pop:105000,density:5200,type:"jewish",birthRate:2.6,youthPct:26,coalPct:47,dist:"Center",lat:32.179,lng:34.908},
+  {name:"Nazareth",pop:78000,density:4100,type:"arab",birthRate:3.1,youthPct:35,coalPct:null,dist:"North",lat:32.700,lng:35.304},
 ];
 
-const CITY_DETAIL={
-  "Jerusalem":{desc:"Mixed city — metropolitan, diverse audiences",transit:[{lat:31.789,lng:35.203,name:"Light Rail — Jaffa Center",sub:"Main axis, high pedestrian flow"},{lat:31.785,lng:35.207,name:"Light Rail — Paris Square",sub:"Central intersection"},{lat:31.780,lng:35.218,name:"Light Rail — Mahane Yehuda",sub:"Market interface"},{lat:31.774,lng:35.217,name:"Train — Jerusalem Navon",sub:"Main station"}],public:[{lat:31.776,lng:35.235,name:"City Hall — Safra Square",sub:"Civic center, public plaza"},{lat:31.780,lng:35.222,name:"Mahane Yehuda Market",sub:"Active day & night"},{lat:31.784,lng:35.206,name:"Paris Square",sub:"Major public square"},{lat:31.783,lng:35.214,name:"Zion Square",sub:"Tourism & commerce"}],optimal:[{lat:31.785,lng:35.206,name:"Paris Square",reason:"Light rail 30m · Public square · Jaffa axis · Commercial zoning"},{lat:31.780,lng:35.222,name:"Mahane Yehuda Market entrance",reason:"Light rail 50m · Active market · High pedestrian flow"}]},
-  "Ashdod":{desc:"Coastal city — diverse neighborhoods",transit:[{lat:31.804,lng:34.655,name:"Train — Ashdod Ad Halom",sub:"Main station"},{lat:31.801,lng:34.643,name:"Central Bus Station",sub:"All city lines"},{lat:31.807,lng:34.649,name:"Bus Stop — Ben Gurion Blvd.",sub:"Main city axis"}],public:[{lat:31.801,lng:34.654,name:"Ashdod Municipality",sub:"Civic center"},{lat:31.799,lng:34.648,name:"Independence Square",sub:"City heart"},{lat:31.806,lng:34.642,name:"Tarbouton",sub:"Main cultural hall"}],optimal:[{lat:31.801,lng:34.650,name:"Independence Square",reason:"Station 250m · Public square · Commercial axis"},{lat:31.804,lng:34.655,name:"Train — Ben Gurion Blvd.",reason:"Train 100m · Main axis · Available land"}]},
-  "Lod":{desc:"Mixed city — historic center, high change potential",transit:[{lat:31.951,lng:34.895,name:"Train — Lod",sub:"Main station"},{lat:31.950,lng:34.886,name:"Central Bus Station",sub:"City & regional lines"}],public:[{lat:31.952,lng:34.890,name:"Lod Municipality",sub:"Civic center"},{lat:31.951,lng:34.892,name:"HaGa'aton Square",sub:"Historic central square"},{lat:31.948,lng:34.890,name:"Lod Market",sub:"Jewish-Arab interface"}],optimal:[{lat:31.951,lng:34.891,name:"HaGa'aton Square",reason:"Historic square · Market · Grey zoning · Mixed interface"},{lat:31.950,lng:34.887,name:"Station — Old City interface",reason:"Station 30m · Church & mosque proximity"}]},
-  "Nazareth":{desc:"Arab city — cultural center, pilgrimage hub",transit:[{lat:32.701,lng:35.298,name:"Nazareth Central Station",sub:"All lines"},{lat:32.699,lng:35.302,name:"Bus Stop — City Center",sub:"Near market & institutions"}],public:[{lat:32.701,lng:35.298,name:"Nazareth Municipality",sub:"Civic center"},{lat:32.697,lng:35.303,name:"Church of the Annunciation",sub:"Pilgrimage hub"},{lat:32.699,lng:35.303,name:"White Mosque Square",sub:"Community center & plaza"}],optimal:[{lat:32.699,lng:35.302,name:"Annunciation Church axis",reason:"Station 200m · Tourist hub · Market · Pedestrian flow"},{lat:32.700,lng:35.298,name:"Municipality — Station interface",reason:"Station 30m · City hall · Main axis"}]}
+// ============================================================
+// CITY DETAIL DATA — Rehovot, Kfar Saba, Nazareth
+// ============================================================
+const CITY_DATA = {
+  "Rehovot": {
+    lat:31.8928, lng:34.8113, zoom:14,
+    desc:"Central city · Research hub · Weizmann Institute area",
+    transit:[
+      {lat:31.8932,lng:34.8078,name:"Rehovot Train Station",sub:"Israel Railways — main station"},
+      {lat:31.8888,lng:34.8098,name:"Central Bus Station",sub:"All city & regional lines"},
+      {lat:31.8950,lng:34.8120,name:"Bus Stop — Herzl Blvd.",sub:"Main city axis"},
+      {lat:31.8870,lng:34.8060,name:"Bus Stop — Weizmann St.",sub:"Research campus access"},
+    ],
+    public:[
+      {lat:31.8960,lng:34.8140,name:"Rehovot City Hall",sub:"Civic center & main plaza"},
+      {lat:31.8910,lng:34.8090,name:"Weizmann Institute of Science",sub:"Major cultural & research landmark"},
+      {lat:31.8945,lng:34.8155,name:"Mann Auditorium Rehovot",sub:"Cultural center & events hall"},
+      {lat:31.8880,lng:34.8110,name:"Rehovot Central Market",sub:"Commercial hub, pedestrian activity"},
+      {lat:31.8930,lng:34.8070,name:"Kaplan Medical Center",sub:"Major public institution"},
+      {lat:31.8965,lng:34.8100,name:"HaSharon Park",sub:"Urban park, public gathering"},
+    ],
+    axes:[
+      {name:"Herzl Blvd.",coords:[[31.8900,34.8060],[31.8920,34.8090],[31.8940,34.8115],[31.8960,34.8140]],type:"main"},
+      {name:"Weizmann St.",coords:[[31.8870,34.8050],[31.8890,34.8075],[31.8910,34.8095]],type:"main"},
+      {name:"Jabotinsky St.",coords:[[31.8950,34.8090],[31.8955,34.8120],[31.8960,34.8150]],type:"secondary"},
+      {name:"Ben Gurion Blvd.",coords:[[31.8880,34.8120],[31.8900,34.8130],[31.8920,34.8140]],type:"pedestrian"},
+    ],
+    optimal:[
+      {lat:31.8932,lng:34.8090,name:"Train Station — Herzl Blvd. intersection",reason:"Train 80m · Bus hub · Main commercial axis · Grey zoning"},
+      {lat:31.8945,lng:34.8130,name:"City Hall plaza",reason:"Civic center · Cultural hall 200m · Pedestrian axis · Public zoning"},
+    ]
+  },
+  "Kfar Saba": {
+    lat:32.1789, lng:34.9076, zoom:14,
+    desc:"Central city · Growing suburb · Strong commercial center",
+    transit:[
+      {lat:32.1740,lng:34.9065,name:"Kfar Saba–Qalqilya Train Station",sub:"Israel Railways — direct to Tel Aviv"},
+      {lat:32.1790,lng:34.9080,name:"Central Bus Station",sub:"All regional & city lines"},
+      {lat:32.1810,lng:34.9095,name:"Bus Stop — Weizmann St.",sub:"Main shopping street"},
+      {lat:32.1760,lng:34.9050,name:"Bus Stop — Rothschild Blvd.",sub:"Southern axis"},
+    ],
+    public:[
+      {lat:32.1800,lng:34.9090,name:"Kfar Saba City Hall",sub:"Civic center & main plaza"},
+      {lat:32.1815,lng:34.9100,name:"Kfar Saba Cultural Center",sub:"Theater, events & exhibitions"},
+      {lat:32.1785,lng:34.9070,name:"Weizmann St. Mall",sub:"Main commercial pedestrian spine"},
+      {lat:32.1770,lng:34.9055,name:"Municipal Library",sub:"Public institution, community hub"},
+      {lat:32.1830,lng:34.9085,name:"Meir Medical Center",sub:"Major hospital & public institution"},
+      {lat:32.1755,lng:34.9075,name:"HaNe'arim Park",sub:"Urban park & recreation"},
+    ],
+    axes:[
+      {name:"Weizmann St.",coords:[[32.1770,34.9055],[32.1785,34.9070],[32.1800,34.9085],[32.1815,34.9100]],type:"main"},
+      {name:"Rothschild Blvd.",coords:[[32.1750,34.9045],[32.1765,34.9060],[32.1780,34.9075]],type:"main"},
+      {name:"Bavli St.",coords:[[32.1800,34.9060],[32.1810,34.9075],[32.1820,34.9090]],type:"secondary"},
+      {name:"HaMasger St.",coords:[[32.1790,34.9095],[32.1800,34.9090],[32.1810,34.9085]],type:"pedestrian"},
+    ],
+    optimal:[
+      {lat:32.1795,lng:34.9085,name:"Weizmann St. — City Hall axis",reason:"Train 500m · City hall · Main pedestrian spine · Commercial zoning"},
+      {lat:32.1742,lng:34.9063,name:"Train Station area",reason:"Train 0m · Bus hub · Grey zoning · High footfall potential"},
+    ]
+  },
+  "Nazareth": {
+    lat:32.6996, lng:35.3035, zoom:14,
+    desc:"Arab city · Cultural capital of Arab Israel · Pilgrimage hub",
+    transit:[
+      {lat:32.7010,lng:35.2980,name:"Nazareth Central Bus Station",sub:"All regional lines — main hub"},
+      {lat:32.6990,lng:35.3020,name:"Bus Stop — City Center",sub:"Near Old City & market"},
+      {lat:32.6960,lng:35.3060,name:"Bus Stop — South Nazareth",sub:"Near churches & pilgrimage sites"},
+      {lat:32.7040,lng:35.3000,name:"Bus Stop — Nazareth Illit junction",sub:"Northern connection"},
+    ],
+    public:[
+      {lat:32.7005,lng:35.2975,name:"Nazareth Municipality",sub:"Civic center"},
+      {lat:32.6972,lng:35.3033,name:"Basilica of the Annunciation",sub:"Largest church in Middle East · pilgrimage hub"},
+      {lat:32.6985,lng:35.3025,name:"White Mosque — Al-Abiad",sub:"Historic mosque · central plaza"},
+      {lat:32.7000,lng:35.3010,name:"Old City Market — Al-Basha",sub:"Traditional market, high pedestrian activity"},
+      {lat:32.6995,lng:35.3050,name:"Nazareth Cultural Center",sub:"Events, exhibitions & community"},
+      {lat:32.7020,lng:35.2990,name:"Nazareth Public Library",sub:"Public institution"},
+      {lat:32.6965,lng:35.3040,name:"Greek Orthodox Church",sub:"Historic religious site, tourism"},
+    ],
+    axes:[
+      {name:"Paul VI St.",coords:[[32.7010,34.2980],[32.7005,35.2990],[32.6998,35.3005],[32.6990,35.3020],[32.6980,35.3030],[32.6972,35.3033]],type:"main"},
+      {name:"Al-Bishara St.",coords:[[32.6985,35.3025],[32.6978,35.3030],[32.6972,35.3033]],type:"pedestrian"},
+      {name:"Qaomiyya St.",coords:[[32.7010,34.2980],[32.7015,35.2995],[32.7020,35.3010]],type:"main"},
+      {name:"Old Market lane",coords:[[32.7000,35.3005],[32.6995,35.3015],[32.6990,35.3020]],type:"pedestrian"},
+    ],
+    optimal:[
+      {lat:32.6990,lng:35.3018,name:"Annunciation Basilica axis",reason:"Bus 200m · Major tourist hub · Market · Pedestrian spine · Mixed zoning"},
+      {lat:32.7004,lng:35.2979,name:"Municipality — Bus Station",reason:"Bus 30m · Civic center · Main axis · Commercial zoning"},
+    ]
+  }
 };
 
 const focusTypes=new Set();
-let densMin=4000,coalSliderVal=50,top3Cities=[],map=null,mapMarkers=[],currentCity=null,currentLayer='optimal';
+let includeArab=false, densMin=4000, coalSliderVal=50;
+let map=null, mapLayers={}, currentCity=null, currentTab='sites';
+let top3=[];
 
 function updateCoal(v){
   coalSliderVal=v;
@@ -360,21 +442,21 @@ function setDens(l){
   ['low','mid','high'].forEach(x=>document.getElementById('ds-'+x).classList.toggle('active',x===l));
 }
 
+function toggleArab(btn){
+  includeArab=!includeArab;
+  btn.classList.toggle('on',includeArab);
+  btn.textContent=includeArab?'✓ Arab Cities Included':'+ Include Arab Cities';
+}
+
 document.querySelectorAll('#tg-type .tb').forEach(b=>b.addEventListener('click',()=>{
   const v=b.dataset.v;
   if(focusTypes.has(v)){focusTypes.delete(v);b.classList.remove('on')}else{focusTypes.add(v);b.classList.add('on')}
 }));
 
-let includeArab=false;
-function toggleArab(btn){
-  includeArab=!includeArab;
-  btn.classList.toggle('on',includeArab);
-  btn.textContent=includeArab?'✓ Arab Cities':'+ Arab Cities';
-}
-
 function calcScore(c,t){
   let s=0;
-  if(c.coalPct!==null){const het=Math.abs(c.coalPct-50);s+=Math.max(0,(25-het)/25)*25;}else{s+=Math.max(0,(25-10)/25)*25;}
+  if(c.coalPct!==null){const het=Math.abs(c.coalPct-50);s+=Math.max(0,(25-het)/25)*25;}
+  else{s+=Math.max(0,(25-10)/25)*25;}
   s+=Math.min(c.birthRate/Math.max(t.birth,0.1),1.5)/1.5*20;
   s+=Math.min(c.youthPct/Math.max(t.youth,1),1.5)/1.5*20;
   s+=(densMin===0?1:densMin===4000?Math.min(c.density/8000,1):Math.min(c.density/15000,1))*20;
@@ -390,47 +472,44 @@ function doSearch(){
   const maxDom=50+Math.abs(coalSliderVal-50);
   const tl=t=>t==='arab'?'Arab':t==='mixed'?'Mixed':'Jewish';
   const dl=c=>c.density<4000?'Low':c.density<8000?'Medium':'High';
-
+  const seen=new Set();
   const filtered=CITIES.filter(c=>{
+    if(seen.has(c.name))return false; seen.add(c.name);
     if(c.type==='arab'&&!includeArab)return false;
     if(c.type!=='arab'&&c.coalPct!==null&&Math.max(c.coalPct,100-c.coalPct)>maxDom)return false;
     if(c.birthRate<birth||c.youthPct<youth||c.density<densMin||c.pop<pop)return false;
     return true;
   }).map(c=>({...c,score:calcScore(c,{birth,youth,pop})})).sort((a,b)=>b.score-a.score);
-
-  top3Cities=filtered.slice(0,3);
+  top3=filtered.slice(0,3);
   const area=document.getElementById('resultsArea');
   if(filtered.length===0){area.innerHTML='<div class="no-res">No cities match. Try widening the parameters.</div>';return;}
-
   area.innerHTML=`<div class="rtitle">${filtered.length} cities — sorted by match score${focusTypes.size>0?' · Focus: '+[...focusTypes].map(tl).join(', '):''}</div>
   <div class="city-grid">${filtered.map((c,i)=>{
-    const isFocused=focusTypes.size>0&&focusTypes.has(c.type);
+    const isFoc=focusTypes.size>0&&focusTypes.has(c.type);
     const coal=c.coalPct,oppo=coal!==null?100-coal:null;
-    return `<div class="cc${isFocused?' focused':''}">
+    const hasMap=!!CITY_DATA[c.name];
+    return `<div class="cc${isFoc?' focused':''}${hasMap?' has-map':''}">
       <div class="cc-rank">#${i+1}</div>
-      ${isFocused?`<div style="margin-bottom:4px"><span class="focus-tag">${tl(c.type)}</span></div>`:''}
+      ${isFoc?`<div style="margin-bottom:4px"><span class="focus-tag">${tl(c.type)}</span></div>`:''}
       <div class="cname">${c.name}</div>
       <div class="cmeta">${c.dist} · ${tl(c.type)} · ${(c.pop/1000).toFixed(0)}K residents</div>
       <div class="score-bar-wrap"><div class="score-bar" style="width:${c.score}%"></div></div>
       <div class="score-row"><span>Match Score</span><span class="score-val">${c.score}/100</span></div>
       ${coal!==null?`<div class="pol-bar"><div class="pol-c" style="width:${coal}%"></div><div class="pol-o" style="width:${oppo}%"></div></div>
       <div class="pol-nums"><span class="pnc">Coal. ${coal}%</span><span class="pno">Opp. ${oppo}%</span></div>`
-      :`<div style="font-size:10px;color:var(--muted);margin-bottom:8px;font-weight:600">Arab city — outside political filter</div>`}
+      :`<div style="font-size:10px;color:var(--muted);margin-bottom:7px;font-weight:600">Arab city — outside political filter</div>`}
       <div class="cparams">
         <div class="cp"><div class="cpl">Birth</div><div class="cpv">${c.birthRate.toFixed(1)}</div></div>
         <div class="cp"><div class="cpl">Youth</div><div class="cpv">${c.youthPct}%</div></div>
         <div class="cp"><div class="cpl">Density</div><div class="cpv">${dl(c)}</div></div>
         <div class="cp"><div class="cpl">Pop.</div><div class="cpv">${(c.pop/1000).toFixed(0)}K</div></div>
       </div>
-      ${CITY_DETAIL[c.name]?`<button class="go-btn" onclick="goToCity('${c.name}')">Urban Mapping →</button>`:''}
+      ${hasMap?`<button class="map-btn" onclick="goToCity('${c.name}')">Urban Mapping →</button>`:''}
     </div>`;
   }).join('')}</div>`;
 }
 
-function goToCity(name){
-  switchStage('B');
-  setTimeout(()=>loadMapCity(name),200);
-}
+function goToCity(name){switchStage('B');setTimeout(()=>loadCity(name),200);}
 
 function switchStage(s){
   document.getElementById('stageA').style.display=s==='A'?'flex':'none';
@@ -440,80 +519,139 @@ function switchStage(s){
   if(s==='B'&&map)setTimeout(()=>map.invalidateSize(),200);
 }
 
-function initMap(lat,lng){
+// ---- MAP ----
+function initMap(lat,lng,zoom){
   if(!map){
-    map=L.map('map').setView([lat,lng],15);
-    L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png',{maxZoom:19,attribution:'© Stadia Maps © OpenStreetMap'}).addTo(map);
-  } else { map.setView([lat,lng],15); }
+    map=L.map('map',{zoomControl:true}).setView([lat,lng],zoom);
+    L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png',{
+      maxZoom:19,attribution:'© Stadia Maps © OpenStreetMap'
+    }).addTo(map);
+  } else {map.setView([lat,lng],zoom);}
 }
 
-function clearMarkers(){mapMarkers.forEach(m=>{try{map.removeLayer(m)}catch(e){}});mapMarkers=[];}
+function clearMap(){
+  Object.values(mapLayers).forEach(g=>{try{map.removeLayer(g)}catch(e){}});
+  mapLayers={};
+}
 
-function loadMapCity(name){
+const colors={transit:'#1E8449',public:'#6C3483',axes_main:'#C0392B',axes_ped:'#E67E22',optimal:'#E91E8C'};
+
+function loadCity(name){
+  const d=CITY_DATA[name]; if(!d)return;
   currentCity=name;
-  const base=CITIES.find(c=>c.name===name);
-  const detail=CITY_DETAIL[name];
-  if(!base||!detail)return;
-  initMap(base.lat,base.lng);
-  clearMarkers();
+  initMap(d.lat,d.lng,d.zoom);
+  clearMap();
+
+  const base=CITIES.find(c=>c.name===name)||{};
   document.getElementById('mb-city').textContent=name.toUpperCase();
-  document.getElementById('mb-desc').textContent=detail.desc;
+  document.getElementById('mb-desc').textContent=d.desc;
   document.getElementById('mb-stats').innerHTML=`
-    <div class="mstat"><div class="mstat-l">Score</div><div class="mstat-v">${base.score||calcScore(base,{birth:3.2,youth:25,pop:10000})}/100</div></div>
-    <div class="mstat"><div class="mstat-l">Birth</div><div class="mstat-v">${base.birthRate}</div></div>
-    <div class="mstat"><div class="mstat-l">Pop.</div><div class="mstat-v">${(base.pop/1000).toFixed(0)}K</div></div>
+    <div class="mstat"><div class="mstat-l">Birth</div><div class="mstat-v">${base.birthRate||'—'}</div></div>
+    <div class="mstat"><div class="mstat-l">Youth</div><div class="mstat-v">${base.youthPct||'—'}%</div></div>
+    <div class="mstat"><div class="mstat-l">Pop.</div><div class="mstat-v">${base.pop?(base.pop/1000).toFixed(0)+'K':'—'}</div></div>
   `;
-  const sw=document.getElementById('citySw');
-  const shown=top3Cities.length>0?top3Cities.filter(c=>CITY_DETAIL[c.name]):[base];
-  sw.innerHTML=shown.map(c=>`<button class="csw${c.name===name?' active':''}" onclick="loadMapCity('${c.name}')">${c.name}</button>`).join('');
-  renderLayer(currentLayer);
+
+  // Draw all layers
+  // Transit
+  const tg=L.layerGroup();
+  d.transit.forEach(p=>{
+    L.circle([p.lat,p.lng],{radius:100,color:colors.transit,fillColor:colors.transit,fillOpacity:.12,weight:1.5,interactive:false}).addTo(tg);
+    L.circleMarker([p.lat,p.lng],{radius:7,color:colors.transit,fillColor:'#fff',fillOpacity:1,weight:2}).bindPopup(`<b>${p.name}</b><br><span style="font-size:11px">${p.sub}</span>`).addTo(tg);
+  });
+  mapLayers.transit=tg.addTo(map);
+
+  // Public
+  const pg=L.layerGroup();
+  d.public.forEach(p=>{
+    L.circle([p.lat,p.lng],{radius:100,color:colors.public,fillColor:colors.public,fillOpacity:.1,weight:1.5,interactive:false}).addTo(pg);
+    L.circleMarker([p.lat,p.lng],{radius:7,color:colors.public,fillColor:'#fff',fillOpacity:1,weight:2}).bindPopup(`<b>${p.name}</b><br><span style="font-size:11px">${p.sub}</span>`).addTo(pg);
+  });
+  mapLayers.public=pg.addTo(map);
+
+  // Axes
+  const ag=L.layerGroup();
+  d.axes.forEach(a=>{
+    const col=a.type==='pedestrian'?colors.axes_ped:colors.axes_main;
+    const dash=a.type==='pedestrian'?'8,5':null;
+    L.polyline(a.coords,{color:col,weight:a.type==='main'?4:3,opacity:.8,dashArray:dash}).bindPopup(`<b>${a.name}</b><br><span style="font-size:11px;text-transform:capitalize">${a.type} axis</span>`).addTo(ag);
+  });
+  mapLayers.axes=ag.addTo(map);
+
+  // Optimal sites
+  const og=L.layerGroup();
+  const starIcon=L.divIcon({html:`<svg width="24" height="24" viewBox="0 0 24 24"><polygon points="12,2 14.5,9 22,9 16,13.5 18.5,21 12,16.5 5.5,21 8,13.5 2,9 9.5,9" fill="${colors.optimal}" stroke="#0D0D0D" stroke-width="1.5"/></svg>`,className:'',iconSize:[24,24],iconAnchor:[12,12]});
+  d.optimal.forEach(o=>{
+    L.marker([o.lat,o.lng],{icon:starIcon}).bindPopup(`<b>${o.name}</b><br><span style="font-size:11px">${o.reason}</span>`).addTo(og);
+  });
+  mapLayers.sites=og.addTo(map);
+
+  // Layer toggle buttons
+  document.getElementById('layerToggles').innerHTML=`
+    <button class="ltgl on" style="background:${colors.transit};border-color:${colors.transit}" onclick="toggleLayer(this,'transit')">Transit</button>
+    <button class="ltgl on" style="background:${colors.public};border-color:${colors.public}" onclick="toggleLayer(this,'public')">Public</button>
+    <button class="ltgl on" style="background:${colors.axes_main};border-color:${colors.axes_main}" onclick="toggleLayer(this,'axes')">Axes</button>
+    <button class="ltgl on" style="background:${colors.optimal};border-color:${colors.optimal}" onclick="toggleLayer(this,'sites')">★ Sites</button>
+  `;
+
+  // City switcher
+  const available=Object.keys(CITY_DATA);
+  document.getElementById('citySw').innerHTML=available.map(n=>`<button class="csw${n===name?' active':''}" onclick="loadCity('${n}')">${n}</button>`).join('');
+
+  showTab(document.querySelector('.ltab.active'),'sites');
   setTimeout(()=>map.invalidateSize(),200);
 }
 
-function renderLayer(section){
-  currentLayer=section;
-  if(!currentCity)return;
-  const detail=CITY_DETAIL[currentCity];
-  if(!detail)return;
-  clearMarkers();
-  const items=detail[section]||[];
+function toggleLayer(btn,layer){
+  const isOn=btn.classList.contains('on');
+  btn.classList.toggle('on',!isOn);
+  if(!isOn){btn.style.opacity='1';mapLayers[layer]&&mapLayers[layer].addTo(map);}
+  else{btn.style.opacity='.35';mapLayers[layer]&&map.removeLayer(mapLayers[layer]);}
+}
+
+function showTab(el,tab){
+  document.querySelectorAll('.ltab').forEach(x=>x.classList.remove('active'));
+  if(el)el.classList.add('active');
+  currentTab=tab;
+  const d=CITY_DATA[currentCity]; if(!d)return;
   const content=document.getElementById('layerContent');
 
-  if(section==='transit'){
-    items.forEach(p=>{
-      const c=L.circle([p.lat,p.lng],{radius:100,color:'#1E8449',fillColor:'#1E8449',fillOpacity:.12,weight:1.5}).addTo(map);
-      const m=L.circleMarker([p.lat,p.lng],{radius:6,color:'#1E8449',fillColor:var_bg(),fillOpacity:1,weight:2}).bindPopup(`<b>${p.name}</b><br>${p.sub}`).addTo(map);
-      mapMarkers.push(c,m);
-    });
-    content.innerHTML=items.map(p=>`<div class="litem" onclick="map.setView([${p.lat},${p.lng}],17)"><div class="litem-name">${p.name}</div><div class="litem-sub">${p.sub}</div></div>`).join('');
-  } else if(section==='public'){
-    items.forEach(p=>{
-      const c=L.circle([p.lat,p.lng],{radius:100,color:'#6C3483',fillColor:'#6C3483',fillOpacity:.1,weight:1.5}).addTo(map);
-      const m=L.circleMarker([p.lat,p.lng],{radius:6,color:'#6C3483',fillColor:var_bg(),fillOpacity:1,weight:2}).bindPopup(`<b>${p.name}</b><br>${p.sub}`).addTo(map);
-      mapMarkers.push(c,m);
-    });
-    content.innerHTML=items.map(p=>`<div class="litem" onclick="map.setView([${p.lat},${p.lng}],17)"><div class="litem-name">${p.name}</div><div class="litem-sub">${p.sub}</div></div>`).join('');
-  } else {
-    const starIcon=L.divIcon({html:`<svg width="22" height="22" viewBox="0 0 22 22"><polygon points="11,1 13.5,8 21,8 15,12.5 17.5,20 11,15.5 4.5,20 7,12.5 1,8 8.5,8" fill="#E91E8C" stroke="#0D0D0D" stroke-width="1.5"/></svg>`,className:'',iconSize:[22,22],iconAnchor:[11,11]});
-    items.forEach(p=>{
-      const m=L.marker([p.lat,p.lng],{icon:starIcon}).bindPopup(`<b>${p.name}</b><br><small>${p.reason}</small>`).addTo(map);
-      mapMarkers.push(m);
-    });
-    content.innerHTML=`<div style="font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px">Sites meeting all parameters</div>`+
-      items.map(p=>`<div class="opt-item" onclick="map.setView([${p.lat},${p.lng}],17)"><div class="opt-name">★ ${p.name}</div><div class="opt-reason">${p.reason}</div></div>`).join('');
+  if(tab==='sites'){
+    content.innerHTML=`<div style="font-size:9px;font-weight:800;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px">Optimal sites — all parameters met</div>`+
+      d.optimal.map(o=>`<div class="opt-item" onclick="map.setView([${o.lat},${o.lng}],17)">
+        <div class="opt-name">★ ${o.name}</div>
+        <div class="opt-reason">${o.reason}</div>
+      </div>`).join('');
+  } else if(tab==='transit'){
+    content.innerHTML=`<div style="font-size:9px;font-weight:800;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px">${d.transit.length} transit stations · 100m radius shown</div>`+
+      d.transit.map(p=>`<div class="litem" onclick="map.setView([${p.lat},${p.lng}],17)">
+        <div class="litem-name">${p.name}</div>
+        <div class="litem-sub">${p.sub}</div>
+      </div>`).join('');
+  } else if(tab==='public'){
+    content.innerHTML=`<div style="font-size:9px;font-weight:800;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px">${d.public.length} public buildings · 100m radius shown</div>`+
+      d.public.map(p=>`<div class="litem" onclick="map.setView([${p.lat},${p.lng}],17)">
+        <div class="litem-name">${p.name}</div>
+        <div class="litem-sub">${p.sub}</div>
+      </div>`).join('');
+  } else if(tab==='axes'){
+    content.innerHTML=`<div style="font-size:9px;font-weight:800;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px">${d.axes.length} urban axes</div>`+
+      d.axes.map(a=>`<div class="litem" onclick="map.setView([${a.coords[0][0]},${a.coords[0][1]}],16)">
+        <div class="litem-name">${a.name}</div>
+        <div class="litem-sub" style="text-transform:capitalize">${a.type} axis</div>
+      </div>`).join('');
   }
 }
 
-function var_bg(){return '#F5F2ED';}
-
-function showLayer(el,section){
-  document.querySelectorAll('.ltab').forEach(x=>x.classList.remove('active'));
-  el.classList.add('active');
-  renderLayer(section);
+function openGovmap(){
+  const d=CITY_DATA[currentCity]; if(!d)return;
+  window.open(`https://www.govmap.gov.il/?c=${d.lng},${d.lat}&z=14&lb=3`,'_blank');
 }
 
 window.addEventListener('load',()=>setTimeout(()=>updateCoal(50),100));
-window.addEventListener('resize',()=>updateCoal(parseInt(document.getElementById('scoal').value)));
+window.addEventListener('resize',()=>{
+  updateCoal(parseInt(document.getElementById('scoal').value));
+  if(map)map.invalidateSize();
+});
 </script>
 </body>
 </html>
