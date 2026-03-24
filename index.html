@@ -112,7 +112,7 @@
 
   /* MAP CUSTOM */
   .leaflet-container { background: #1a1a1a; }
-  .leaflet-tile { filter: invert(1) hue-rotate(180deg) brightness(0.85) saturate(0.7); }
+  .leaflet-tile { filter: brightness(0.9) saturate(0.8); }
   .leaflet-control-zoom a { background: var(--surface) !important; color: var(--text) !important; border-color: var(--border) !important; }
   .opt-marker-label { background: var(--gold); color: #000; padding: 2px 6px; font-size: 11px; font-weight: 700; border-radius: 3px; white-space: nowrap; font-family: 'Heebo', sans-serif; }
 </style>
@@ -376,8 +376,8 @@ let currentLayerSection = 'optimal';
 function initMap() {
   if (map) return;
   map = L.map('map', { zoomControl: true }).setView([31.7800, 35.2170], 14);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19, attribution: '© OpenStreetMap contributors'
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19, attribution: '© Stadia Maps © OpenStreetMap'
   }).addTo(map);
 }
 
