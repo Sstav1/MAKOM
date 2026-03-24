@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>מנוע המיקום האדריכלי</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+  :root {
+    --bg: #0f0f0f;
+    --surface: #171717;
+    --surface2: #1f1f1f;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.14);
+    --text: #f0ede8;
+    --muted: #888;
+    --accent: #c8b89a;
+    --accent2: #8b7355;
+    --green: #4a9e6b;
+    --purple: #7c6fcd;
+    --gold: #d4a843;
+    --red: #c05a4a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Heebo', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; direction: rtl; }
+
+  /* STAGE INDICATOR */
+  .stage-bar { display: flex; align-items: center; gap: 0; border-bottom: 1px solid var(--border); background: var(--surface); }
+  .stage-tab { flex: 1; padding: 14px 20px; font-size: 13px; color: var(--muted); cursor: pointer; border: none; background: none; transition: all .2s; display: flex; align-items: center; gap: 8px; justify-content: center; border-bottom: 2px solid transparent; }
+  .stage-tab.active { color: var(--accent); border-bottom-color: var(--accent); background: var(--surface2); }
+  .stage-tab .num { width: 22px; height: 22px; border-radius: 50%; border: 1px solid currentColor; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+
+  /* STAGE A */
+  #stageA { display: flex; height: calc(100vh - 49px); }
+  .params-panel { width: 340px; flex-shrink: 0; overflow-y: auto; border-left: 1px solid var(--border); padding: 24px 20px; background: var(--surface); }
+  .params-panel h1 { font-size: 20px; font-weight: 300; color: var(--text); margin-bottom: 4px; letter-spacing: .02em; }
+  .params-panel .subtitle { font-size: 12px; color: var(--muted); margin-bottom: 28px; line-height: 1.6; }
+  .section-label { font-size: 10px; font-weight: 700; letter-spacing: .1em; color: var(--accent2); text-transform: uppercase; margin-bottom: 14px; margin-top: 24px; }
+  .filter-row { margin-bottom: 18px; }
+  .filter-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
+  .filter-name { font-size: 13px; color: var(--text); }
+  .filter-val { font-size: 13px; font-weight: 500; color: var(--accent); }
+  .filter-desc { font-size: 11px; color: var(--muted); margin-bottom: 7px; line-height: 1.4; }
+  input[type=range] { width: 100%; -webkit-appearance: none; height: 2px; background: var(--border2); border-radius: 1px; outline: none; }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; background: var(--accent); border-radius: 50%; cursor: pointer; border: 2px solid var(--bg); }
+  .toggle-group { display: flex; gap: 5px; flex-wrap: wrap; }
+  .tgl { font-size: 11px; padding: 4px 11px; border-radius: 20px; border: 1px solid var(--border2); background: transparent; color: var(--muted); cursor: pointer; transition: all .15s; }
+  .tgl.on { background: var(--accent2); color: var(--text); border-color: var(--accent2); }
+  .search-btn { width: 100%; margin-top: 28px; padding: 13px; font-size: 14px; font-weight: 500; background: var(--accent); color: var(--bg); border: none; border-radius: 4px; cursor: pointer; letter-spacing: .03em; font-family: 'Heebo', sans-serif; transition: background .15s; }
+  .search-btn:hover { background: var(--gold); }
+
+  /* RESULTS */
+  .results-area { flex: 1; overflow-y: auto; padding: 28px 28px; background: var(--bg); }
+  .results-area .placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: var(--muted); text-align: center; gap: 12px; }
+  .placeholder-icon { font-size: 48px; opacity: .3; }
+  .placeholder p { font-size: 14px; line-height: 1.7; max-width: 280px; }
+  .results-title { font-size: 12px; color: var(--muted); margin-bottom: 20px; letter-spacing: .05em; }
+  .top3 { display: flex; flex-direction: column; gap: 14px; }
+  .city-card { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 20px 22px; cursor: pointer; transition: all .2s; position: relative; overflow: hidden; }
+  .city-card::before { content: ''; position: absolute; top: 0; right: 0; width: 3px; height: 100%; background: var(--border); transition: background .2s; }
+  .city-card:nth-child(1)::before { background: var(--gold); }
+  .city-card:nth-child(2)::before { background: var(--muted); }
+  .city-card:nth-child(3)::before { background: var(--accent2); }
+  .city-card:hover { border-color: var(--border2); background: var(--surface2); transform: translateY(-1px); }
+  .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+  .card-rank { font-size: 10px; color: var(--muted); letter-spacing: .08em; }
+  .card-score { font-size: 22px; font-weight: 300; color: var(--accent); }
+  .card-score span { font-size: 11px; color: var(--muted); }
+  .card-name { font-size: 22px; font-weight: 300; color: var(--text); margin-bottom: 3px; }
+  .card-meta { font-size: 12px; color: var(--muted); margin-bottom: 14px; }
+  .card-params { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 14px; }
+  .cp { background: var(--surface2); border-radius: 4px; padding: 8px 10px; }
+  .cp-l { font-size: 10px; color: var(--muted); margin-bottom: 2px; }
+  .cp-v { font-size: 14px; font-weight: 500; color: var(--text); }
+  .score-bar-wrap { height: 2px; background: var(--border); border-radius: 1px; margin-bottom: 14px; }
+  .score-bar { height: 2px; border-radius: 1px; background: var(--accent); }
+  .card-cta { font-size: 12px; color: var(--accent); letter-spacing: .05em; }
+  .no-results { text-align: center; padding: 3rem; color: var(--muted); font-size: 14px; }
+
+  /* STAGE B */
+  #stageB { display: none; height: calc(100vh - 49px); }
+  .map-container { flex: 1; position: relative; }
+  #map { width: 100%; height: 100%; }
+  .map-sidebar { width: 300px; flex-shrink: 0; border-left: 1px solid var(--border); background: var(--surface); display: flex; flex-direction: column; overflow: hidden; }
+  .msb-header { padding: 16px 18px; border-bottom: 1px solid var(--border); }
+  .msb-city-name { font-size: 18px; font-weight: 300; color: var(--text); }
+  .msb-desc { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .msb-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px; background: var(--border); border-bottom: 1px solid var(--border); }
+  .mstat { background: var(--surface); padding: 10px 12px; }
+  .mstat-l { font-size: 10px; color: var(--muted); margin-bottom: 2px; }
+  .mstat-v { font-size: 14px; font-weight: 500; color: var(--text); }
+  .layer-tabs { display: flex; border-bottom: 1px solid var(--border); }
+  .ltab { flex: 1; padding: 10px 6px; font-size: 11px; color: var(--muted); cursor: pointer; border: none; background: none; border-bottom: 2px solid transparent; transition: all .15s; font-family: 'Heebo', sans-serif; }
+  .ltab.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .layer-content { flex: 1; overflow-y: auto; padding: 12px 14px; }
+  .litem { padding: 10px 12px; border: 1px solid var(--border); border-radius: 4px; margin-bottom: 7px; cursor: pointer; transition: all .15s; }
+  .litem:hover { border-color: var(--border2); background: var(--surface2); }
+  .litem-name { font-size: 12px; font-weight: 500; color: var(--text); margin-bottom: 2px; }
+  .litem-sub { font-size: 11px; color: var(--muted); line-height: 1.4; }
+  .opt-item { padding: 10px 12px; border: 1px solid rgba(212,168,67,.3); border-radius: 4px; margin-bottom: 7px; cursor: pointer; transition: all .15s; }
+  .opt-item:hover { border-color: rgba(212,168,67,.6); background: rgba(212,168,67,.04); }
+  .opt-name { font-size: 12px; font-weight: 500; color: var(--gold); margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+  .opt-reason { font-size: 11px; color: var(--muted); line-height: 1.5; }
+  .city-switcher { padding: 10px 14px; border-top: 1px solid var(--border); display: flex; gap: 5px; flex-wrap: wrap; }
+  .csw { font-size: 11px; padding: 4px 9px; border-radius: 20px; border: 1px solid var(--border2); background: transparent; color: var(--muted); cursor: pointer; font-family: 'Heebo', sans-serif; transition: all .15s; }
+  .csw.active { background: var(--accent2); color: var(--text); border-color: var(--accent2); }
+  .back-btn { padding: 10px 14px; border-top: 1px solid var(--border); font-size: 12px; color: var(--muted); cursor: pointer; border-bottom: none; border-right: none; border-left: none; background: none; font-family: 'Heebo', sans-serif; text-align: right; transition: color .15s; }
+  .back-btn:hover { color: var(--accent); }
+
+  /* MAP CUSTOM */
+  .leaflet-container { background: #1a1a1a; }
+  .leaflet-tile { filter: invert(1) hue-rotate(180deg) brightness(0.85) saturate(0.7); }
+  .leaflet-control-zoom a { background: var(--surface) !important; color: var(--text) !important; border-color: var(--border) !important; }
+  .opt-marker-label { background: var(--gold); color: #000; padding: 2px 6px; font-size: 11px; font-weight: 700; border-radius: 3px; white-space: nowrap; font-family: 'Heebo', sans-serif; }
+</style>
+</head>
+<body>
+
+<div class="stage-bar">
+  <button class="stage-tab active" id="tabA" onclick="switchStage('A')">
+    <span class="num">א</span> בחירת עיר — פרמטרים ארציים
+  </button>
+  <button class="stage-tab" id="tabB" onclick="switchStage('B')">
+    <span class="num">ב</span> מיפוי עירוני — אתרים מיטביים
+  </button>
+</div>
+
+<!-- STAGE A -->
+<div id="stageA" style="display:flex">
+  <div class="params-panel">
+    <h1>מנוע המיקום</h1>
+    <p class="subtitle">הגדר פרמטרים וקבל את שלוש הערים המיטביות להשפעה אדריכלית מקסימלית</p>
+
+    <div class="section-label">פרמטרים ארציים</div>
+
+    <div class="filter-row">
+      <div class="filter-top"><span class="filter-name">הטרוגניות פוליטית</span><span class="filter-val" id="v-pol">70%</span></div>
+      <div class="filter-desc">אחוז מקסימלי לגוש דומיננטי — ערים ערביות פטורות מסינון זה</div>
+      <input type="range" id="s-pol" min="50" max="100" value="70" step="1" oninput="updateVal('pol',this.value,'%')">
+    </div>
+    <div class="filter-row">
+      <div class="filter-top"><span class="filter-name">ילודה מינימלית</span><span class="filter-val" id="v-birth">3.2</span></div>
+      <div class="filter-desc">ממוצע ילדים לאישה — 3.2 ומעלה מעיד על גדילה דמוגרפית</div>
+      <input type="range" id="s-birth" min="1.5" max="6" value="3.2" step="0.1" oninput="updateVal('birth',this.value,'')">
+    </div>
+    <div class="filter-row">
+      <div class="filter-top"><span class="filter-name">אחוז ילדים מינימלי</span><span class="filter-val" id="v-youth">25%</span></div>
+      <div class="filter-desc">אוכלוסייה מתחת לגיל 18 — מעיד על פוטנציאל צמיחה עתידי</div>
+      <input type="range" id="s-youth" min="15" max="55" value="25" step="1" oninput="updateVal('youth',this.value,'%')">
+    </div>
+
+    <div class="section-label">פרמטרים אורבניים</div>
+
+    <div class="filter-row">
+      <div class="filter-top"><span class="filter-name">צפיפות מינימלית</span><span class="filter-val" id="v-dens">5,000</span></div>
+      <div class="filter-desc">תושבים לקמ"ר — אפקטיביות אורבנית</div>
+      <input type="range" id="s-dens" min="500" max="15000" value="5000" step="500" oninput="updateVal('dens',this.value,'')">
+    </div>
+    <div class="filter-row">
+      <div class="filter-top"><span class="filter-name">גודל עיר מינימלי</span><span class="filter-val" id="v-pop">30,000</span></div>
+      <div class="filter-desc">מספר תושבים — מסה קריטית לחשיפה</div>
+      <input type="range" id="s-pop" min="10000" max="300000" value="30000" step="5000" oninput="updateVal('pop',this.value,'')">
+    </div>
+    <div class="filter-row">
+      <div class="filter-top"><span class="filter-name">סוג עיר</span></div>
+      <div class="toggle-group" id="tg-type">
+        <button class="tgl on" data-v="jewish">יהודית</button>
+        <button class="tgl on" data-v="arab">ערבית</button>
+        <button class="tgl on" data-v="mixed">מעורבת</button>
+      </div>
+    </div>
+    <div class="filter-row">
+      <div class="filter-top"><span class="filter-name">תחבורה ציבורית</span></div>
+      <div class="toggle-group" id="tg-transit">
+        <button class="tgl on" data-v="metro">רכבת קלה</button>
+        <button class="tgl on" data-v="train">רכבת ישראל</button>
+        <button class="tgl on" data-v="bus">תחנה מרכזית</button>
+      </div>
+    </div>
+
+    <button class="search-btn" onclick="doSearch()">חפש את שלוש הערים המיטביות ←</button>
+  </div>
+
+  <div class="results-area" id="resultsArea">
+    <div class="placeholder">
+      <div class="placeholder-icon">◎</div>
+      <p>הגדר את הפרמטרים ולחץ חיפוש כדי לקבל את שלוש הערים המיטביות עבור הפרויקט</p>
+    </div>
+  </div>
+</div>
+
+<!-- STAGE B -->
+<div id="stageB" style="display:none;height:calc(100vh - 49px);display:none">
+  <div style="display:flex;height:100%">
+    <div class="map-container">
+      <div id="map"></div>
+    </div>
+    <div class="map-sidebar">
+      <div class="msb-header">
+        <div class="msb-city-name" id="mb-name">—</div>
+        <div class="msb-desc" id="mb-desc">—</div>
+      </div>
+      <div class="msb-stats" id="mb-stats"></div>
+      <div class="layer-tabs">
+        <button class="ltab active" onclick="showLayer(this,'optimal')">★ מיטביים</button>
+        <button class="ltab" onclick="showLayer(this,'transit')">תחבורה</button>
+        <button class="ltab" onclick="showLayer(this,'public')">מבני ציבור</button>
+      </div>
+      <div class="layer-content" id="layerContent"></div>
+      <div class="city-switcher" id="citySwitcher"></div>
+      <button class="back-btn" onclick="switchStage('A')">← חזרה לבחירת עיר</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const CITIES = [
+  {name:"תל אביב-יפו",pop:460613,density:8200,type:"mixed",birthRate:1.9,youthPct:18,politicalDom:58,transit:["metro","train","bus"],dist:"מרכז",lat:32.0800,lng:34.7800},
+  {name:"ירושלים",pop:971800,density:7200,type:"mixed",birthRate:3.9,youthPct:38,politicalDom:62,transit:["metro","train","bus"],dist:"ירושלים",lat:31.7800,lng:35.2170},
+  {name:"חיפה",pop:289258,density:5100,type:"mixed",birthRate:2.1,youthPct:22,politicalDom:55,transit:["train","bus"],dist:"חיפה",lat:32.8140,lng:34.9896},
+  {name:"ראשון לציון",pop:267845,density:5800,type:"jewish",birthRate:2.7,youthPct:25,politicalDom:62,transit:["metro","train","bus"],dist:"מרכז",lat:31.9730,lng:34.7925},
+  {name:"פתח תקווה",pop:261034,density:6400,type:"jewish",birthRate:2.9,youthPct:27,politicalDom:60,transit:["metro","bus"],dist:"מרכז",lat:32.0878,lng:34.8878},
+  {name:"אשדוד",pop:240174,density:5900,type:"jewish",birthRate:3.2,youthPct:30,politicalDom:67,transit:["train","bus"],dist:"דרום",lat:31.8014,lng:34.6490},
+  {name:"נתניה",pop:238565,density:6100,type:"jewish",birthRate:2.8,youthPct:26,politicalDom:61,transit:["train","bus"],dist:"מרכז",lat:32.3215,lng:34.8532},
+  {name:"באר שבע",pop:220174,density:4800,type:"jewish",birthRate:3.0,youthPct:28,politicalDom:64,transit:["train","bus"],dist:"דרום",lat:31.2530,lng:34.7915},
+  {name:"בני ברק",pop:219260,density:22000,type:"jewish",birthRate:6.8,youthPct:52,politicalDom:88,transit:["metro","bus"],dist:"מרכז",lat:32.0841,lng:34.8339},
+  {name:"בת ים",pop:158000,density:12500,type:"jewish",birthRate:2.3,youthPct:22,politicalDom:60,transit:["metro","bus"],dist:"מרכז",lat:32.0204,lng:34.7508},
+  {name:"רמת גן",pop:165000,density:9800,type:"jewish",birthRate:2.1,youthPct:20,politicalDom:56,transit:["metro","train","bus"],dist:"מרכז",lat:32.0684,lng:34.8248},
+  {name:"אשקלון",pop:155000,density:3900,type:"jewish",birthRate:3.0,youthPct:28,politicalDom:68,transit:["train","bus"],dist:"דרום",lat:31.6688,lng:34.5743},
+  {name:"רחובות",pop:145000,density:5500,type:"jewish",birthRate:2.8,youthPct:27,politicalDom:60,transit:["train","bus"],dist:"מרכז",lat:31.8928,lng:34.8113},
+  {name:"בית שמש",pop:131000,density:4800,type:"mixed",birthRate:4.5,youthPct:42,politicalDom:71,transit:["train","bus"],dist:"ירושלים",lat:31.7519,lng:34.9892},
+  {name:"הרצליה",pop:101000,density:4200,type:"jewish",birthRate:2.2,youthPct:22,politicalDom:52,transit:["train","bus"],dist:"מרכז",lat:32.1663,lng:34.8435},
+  {name:"כפר סבא",pop:105000,density:5200,type:"jewish",birthRate:2.6,youthPct:26,politicalDom:58,transit:["train","bus"],dist:"מרכז",lat:32.1789,lng:34.9076},
+  {name:"חולון",pop:198000,density:9200,type:"jewish",birthRate:2.3,youthPct:22,politicalDom:59,transit:["metro","bus"],dist:"מרכז",lat:32.0114,lng:34.7734},
+  {name:"מודיעין",pop:112000,density:4100,type:"jewish",birthRate:2.6,youthPct:30,politicalDom:54,transit:["train","bus"],dist:"מרכז",lat:31.8969,lng:35.0095},
+  {name:"לוד",pop:85000,density:3800,type:"mixed",birthRate:3.8,youthPct:35,politicalDom:63,transit:["train","bus"],dist:"מרכז",lat:31.9514,lng:34.8953},
+  {name:"רמלה",pop:80000,density:3500,type:"mixed",birthRate:3.5,youthPct:34,politicalDom:65,transit:["train","bus"],dist:"מרכז",lat:31.9298,lng:34.8656},
+  {name:"עכו",pop:50000,density:3200,type:"mixed",birthRate:3.3,youthPct:33,politicalDom:60,transit:["train","bus"],dist:"צפון",lat:32.9233,lng:35.0686},
+  {name:"רהט",pop:80000,density:3900,type:"arab",birthRate:5.2,youthPct:48,politicalDom:75,transit:["bus"],dist:"דרום",lat:31.3925,lng:34.7544},
+  {name:"נצרת",pop:78000,density:4100,type:"arab",birthRate:3.1,youthPct:35,politicalDom:72,transit:["bus"],dist:"צפון",lat:32.6996,lng:35.3035},
+  {name:"אום אל-פחם",pop:58000,density:3000,type:"arab",birthRate:3.8,youthPct:40,politicalDom:70,transit:["bus"],dist:"צפון",lat:32.5153,lng:35.1525},
+  {name:"עפולה",pop:58000,density:4100,type:"jewish",birthRate:2.9,youthPct:28,politicalDom:69,transit:["train","bus"],dist:"צפון",lat:32.6079,lng:35.2897},
+  {name:"כרמיאל",pop:47000,density:3600,type:"jewish",birthRate:2.5,youthPct:26,politicalDom:58,transit:["train","bus"],dist:"צפון",lat:32.9147,lng:35.2979},
+  {name:"נהריה",pop:60000,density:4200,type:"jewish",birthRate:2.4,youthPct:24,politicalDom:59,transit:["train","bus"],dist:"צפון",lat:33.0047,lng:35.0972},
+  {name:"קריית גת",pop:62000,density:3600,type:"jewish",birthRate:3.1,youthPct:30,politicalDom:69,transit:["train","bus"],dist:"דרום",lat:31.6100,lng:34.7642},
+  {name:"קריית ביאליק",pop:58000,density:5100,type:"jewish",birthRate:2.2,youthPct:22,politicalDom:58,transit:["train","bus"],dist:"חיפה",lat:32.8343,lng:35.0851},
+  {name:"קריית מוצקין",pop:46000,density:6800,type:"jewish",birthRate:2.3,youthPct:23,politicalDom:57,transit:["train","bus"],dist:"חיפה",lat:32.8358,lng:35.0737},
+  {name:"נס ציונה",pop:59000,density:5200,type:"jewish",birthRate:2.5,youthPct:25,politicalDom:57,transit:["train","bus"],dist:"מרכז",lat:31.9296,lng:34.7982},
+  {name:"רעננה",pop:80000,density:4800,type:"jewish",birthRate:2.4,youthPct:25,politicalDom:53,transit:["train","bus"],dist:"מרכז",lat:32.1841,lng:34.8706},
+  {name:"גבעתיים",pop:60000,density:14000,type:"jewish",birthRate:1.9,youthPct:19,politicalDom:48,transit:["metro","bus"],dist:"מרכז",lat:32.0697,lng:34.8126},
+  {name:"יבנה",pop:52000,density:4600,type:"jewish",birthRate:2.8,youthPct:28,politicalDom:62,transit:["train","bus"],dist:"מרכז",lat:31.8766,lng:34.7411},
+  {name:"שדרות",pop:30000,density:3400,type:"jewish",birthRate:3.0,youthPct:30,politicalDom:71,transit:["train","bus"],dist:"דרום",lat:31.5243,lng:34.5965},
+  {name:"נתיבות",pop:35000,density:2800,type:"jewish",birthRate:3.5,youthPct:35,politicalDom:76,transit:["bus"],dist:"דרום",lat:31.4168,lng:34.5884},
+  {name:"טייבה",pop:46000,density:5600,type:"arab",birthRate:3.4,youthPct:37,politicalDom:66,transit:["bus"],dist:"מרכז",lat:32.3253,lng:35.0022},
+  {name:"קלנסווה",pop:27000,density:6200,type:"arab",birthRate:3.5,youthPct:39,politicalDom:69,transit:["bus"],dist:"מרכז",lat:32.2842,lng:34.9956},
+  {name:"טירה",pop:30000,density:5400,type:"arab",birthRate:3.3,youthPct:37,politicalDom:67,transit:["bus"],dist:"מרכז",lat:32.2333,lng:34.9564},
+  {name:"שפרעם",pop:43000,density:2800,type:"arab",birthRate:3.4,youthPct:37,politicalDom:68,transit:["bus"],dist:"צפון",lat:32.8059,lng:35.1705},
+  {name:"כפר קאסם",pop:25000,density:4900,type:"arab",birthRate:3.7,youthPct:40,politicalDom:67,transit:["bus"],dist:"מרכז",lat:32.1156,lng:34.9756},
+  {name:"מגדל העמק",pop:27000,density:2900,type:"jewish",birthRate:2.9,youthPct:29,politicalDom:68,transit:["bus"],dist:"צפון",lat:32.6747,lng:35.2394},
+  {name:"אילת",pop:52000,density:1900,type:"jewish",birthRate:2.5,youthPct:25,politicalDom:59,transit:["bus"],dist:"דרום",lat:29.5577,lng:34.9519},
+  {name:"טבריה",pop:45000,density:2700,type:"jewish",birthRate:3.0,youthPct:29,politicalDom:70,transit:["bus"],dist:"צפון",lat:32.7940,lng:35.5300},
+  {name:"צפת",pop:34000,density:2500,type:"mixed",birthRate:3.2,youthPct:31,politicalDom:67,transit:["bus"],dist:"צפון",lat:32.9648,lng:35.4956},
+];
+
+const CITY_DETAIL = {
+  "ירושלים":{desc:"עיר מעורבת, מטרופולין, מגוון קהלים",
+    transit:[{lat:31.7891,lng:35.2025,name:"רכבת קלה — יפו מרכז",sub:"ציר יפו, תחנה ראשית"},{lat:31.7850,lng:35.2065,name:"רכבת קלה — כיכר פריז",sub:"צומת מרכזי"},{lat:31.7820,lng:35.2110,name:"רכבת קלה — בן יהודה",sub:"מדרחוב"},{lat:31.7800,lng:35.2175,name:"רכבת קלה — מחנה יהודה",sub:"ממשק שוק"},{lat:31.7743,lng:35.2174,name:"רכבת ישראל — נבון",sub:"תחנה מרכזית"},{lat:31.7890,lng:35.2020,name:"תחנה מרכזית ירושלים",sub:"קווים בין-עירוניים"}],
+    public:[{lat:31.7760,lng:35.2352,name:"כיכר ספרא — עירייה",sub:"מרכז שלטוני"},{lat:31.7800,lng:35.2220,name:"שוק מחנה יהודה",sub:"פעיל יום ולילה"},{lat:31.7844,lng:35.2063,name:"כיכר פריז",sub:"ממשק שדרות"},{lat:31.7830,lng:35.2137,name:"כיכר ציון",sub:"מסחר ותיירות"},{lat:31.7713,lng:35.2163,name:"מוזיאון ישראל",sub:"מוקד תרבות לאומי"},{lat:31.7780,lng:35.2350,name:"בית העיר",sub:"תרבות ואירועים"}],
+    optimal:[{lat:31.7848,lng:35.2063,name:"כיכר פריז",reason:"רכבת קלה 30מ׳ · כיכר ציבורית · ציר יפו · תב״ע מסחר"},{lat:31.7802,lng:35.2218,name:"פתח שוק מחנה יהודה",reason:"רכבת קלה 50מ׳ · שוק פעיל · הולכי רגל · יום ולילה"},{lat:31.7762,lng:35.2350,name:"כיכר ספרא",reason:"מוקד שלטוני · תחבורה · ממשק ציבורי גבוה"}]},
+  "אשדוד":{desc:"עיר ים-תיכונית, רובעים מגוונים, ציר הנמל",
+    transit:[{lat:31.8042,lng:34.6553,name:"רכבת — עד-הלום",sub:"תחנה מרכזית"},{lat:31.8014,lng:34.6431,name:"תחנה מרכזית — רובע ח׳",sub:"כל קווי העיר"},{lat:31.8065,lng:34.6490,name:"תחנה — שד׳ בן גוריון",sub:"ציר ראשי"}],
+    public:[{lat:31.8010,lng:34.6540,name:"עיריית אשדוד",sub:"מרכז מנהלי"},{lat:31.7990,lng:34.6480,name:"כיכר העצמאות",sub:"לב העיר"},{lat:31.8058,lng:34.6422,name:"תרבותרון אשדוד",sub:"אולם תרבות מרכזי"},{lat:31.7955,lng:34.6550,name:"כיכר הים — טיילת",sub:"ממשק ים"}],
+    optimal:[{lat:31.8010,lng:34.6495,name:"כיכר העצמאות",reason:"תחנה 250מ׳ · כיכר ציבורית · ציר מסחרי · תב״ע מסחר"},{lat:31.8044,lng:34.6545,name:"ממשק רכבת — שד׳ בן גוריון",reason:"רכבת 100מ׳ · ציר ראשי · קרקע זמינה"}]},
+  "לוד":{desc:"עיר מעורבת, מרכז היסטורי, פוטנציאל שינוי גבוה",
+    transit:[{lat:31.9514,lng:34.8953,name:"רכבת ישראל — לוד",sub:"תחנה מרכזית"},{lat:31.9495,lng:34.8862,name:"תחנה מרכזית לוד",sub:"קווי עיר ואיזור"},{lat:31.9460,lng:34.8920,name:"תחנה — העיר העתיקה",sub:"לב היסטורי"}],
+    public:[{lat:31.9520,lng:34.8895,name:"עיריית לוד",sub:"מרכז שלטוני"},{lat:31.9505,lng:34.8922,name:"כיכר הגעתון",sub:"כיכר היסטורית"},{lat:31.9480,lng:34.8900,name:"שוק לוד",sub:"ממשק יהודי-ערבי"},{lat:31.9495,lng:34.8870,name:"כנסיית גאורגיוס",sub:"מוקד תיירות"},{lat:31.9470,lng:34.8940,name:"המסגד הגדול",sub:"מרכז קהילתי"}],
+    optimal:[{lat:31.9508,lng:34.8910,name:"כיכר הגעתון",reason:"כיכר היסטורית · שוק · תב״ע אפור · ממשק יהודי-ערבי"},{lat:31.9497,lng:34.8868,name:"ממשק תחנה — עיר עתיקה",reason:"תחנה 30מ׳ · קרבה לכנסיה ומסגד · ציר הולכי רגל"}]},
+  "נצרת":{desc:"עיר ערבית, מרכז תרבות, מוקד עלייה לרגל",
+    transit:[{lat:32.7010,lng:35.2980,name:"תחנה מרכזית נצרת",sub:"כל הקווים"},{lat:32.6990,lng:35.3020,name:"תחנה — מרכז עירוני",sub:"ליד שוק ומוסדות"}],
+    public:[{lat:32.7005,lng:35.2975,name:"עיריית נצרת",sub:"מרכז שלטוני"},{lat:32.6972,lng:35.3033,name:"כנסיית הבשורה",sub:"מוקד עלייה לרגל"},{lat:32.6985,lng:35.3025,name:"המסגד הלבן",sub:"כיכר ציבורית"},{lat:32.7000,lng:35.3010,name:"שוק העיר העתיקה",sub:"שוק מסורתי פעיל"}],
+    optimal:[{lat:32.6990,lng:35.3018,name:"ציר כנסיית הבשורה",reason:"תחנה 200מ׳ · מוקד תיירותי · שוק · הולכי רגל"},{lat:32.7004,lng:35.2979,name:"ממשק עירייה — תחנה",reason:"תחנה 30מ׳ · עירייה · ציר מרכזי"}]}
+};
+
+// active toggles
+const activeTypes = new Set(["jewish","arab","mixed"]);
+const activeTransit = new Set(["metro","train","bus"]);
+
+document.querySelectorAll('#tg-type .tgl').forEach(b => b.addEventListener('click', () => {
+  const v = b.dataset.v;
+  if (activeTypes.has(v)) { activeTypes.delete(v); b.classList.remove('on'); }
+  else { activeTypes.add(v); b.classList.add('on'); }
+}));
+document.querySelectorAll('#tg-transit .tgl').forEach(b => b.addEventListener('click', () => {
+  const v = b.dataset.v;
+  if (activeTransit.has(v)) { activeTransit.delete(v); b.classList.remove('on'); }
+  else { activeTransit.add(v); b.classList.add('on'); }
+}));
+
+function updateVal(id, val, suffix) {
+  const v = parseFloat(val);
+  document.getElementById('v-' + id).textContent = (v >= 1000 ? v.toLocaleString() : (Number.isInteger(v) ? v : v.toFixed(1))) + suffix;
+}
+
+function calcScore(c) {
+  let s = 0;
+  s += Math.min((100 - c.politicalDom) / 50, 1) * 25;
+  s += Math.min((c.birthRate - 1.5) / 4.5, 1) * 20;
+  s += Math.min(c.youthPct / 55, 1) * 15;
+  s += Math.min((c.density - 500) / 21500, 1) * 20;
+  s += Math.min(c.pop / 500000, 1) * 10;
+  s += (c.transit.length / 3) * 10;
+  return Math.round(s * 100);
+}
+
+let top3Cities = [];
+
+function doSearch() {
+  const pol = parseFloat(document.getElementById('s-pol').value);
+  const birth = parseFloat(document.getElementById('s-birth').value);
+  const youth = parseFloat(document.getElementById('s-youth').value);
+  const dens = parseFloat(document.getElementById('s-dens').value);
+  const pop = parseFloat(document.getElementById('s-pop').value);
+
+  const filtered = CITIES.filter(c => {
+    if (!activeTypes.has(c.type)) return false;
+    if (c.type !== 'arab' && c.politicalDom > pol) return false;
+    if (c.birthRate < birth) return false;
+    if (c.youthPct < youth) return false;
+    if (c.density < dens) return false;
+    if (c.pop < pop) return false;
+    if (activeTransit.size > 0 && !c.transit.some(t => activeTransit.has(t))) return false;
+    return true;
+  }).map(c => ({ ...c, score: calcScore(c) })).sort((a, b) => b.score - a.score).slice(0, 3);
+
+  top3Cities = filtered;
+  const area = document.getElementById('resultsArea');
+
+  if (filtered.length === 0) {
+    area.innerHTML = '<div class="no-results">אין ערים העומדות בפרמטרים. נסה להרחיב את הסינון.</div>';
+    return;
+  }
+
+  const ranks = ['מקום ראשון', 'מקום שני', 'מקום שלישי'];
+  area.innerHTML = `<div class="results-title">תוצאות חיפוש — ${filtered.length} ערים מובילות</div>
+  <div class="top3">${filtered.map((c, i) => `
+    <div class="city-card" onclick="goToCity('${c.name}')">
+      <div class="card-header">
+        <div>
+          <div class="card-rank">${ranks[i]}</div>
+          <div class="card-name">${c.name}</div>
+          <div class="card-meta">${c.dist} · ${c.pop.toLocaleString()} תושבים · ${c.type === 'arab' ? 'ערבית' : c.type === 'mixed' ? 'מעורבת' : 'יהודית'}</div>
+        </div>
+        <div style="text-align:left"><div class="card-score">${c.score}<span>/100</span></div></div>
+      </div>
+      <div class="score-bar-wrap"><div class="score-bar" style="width:${c.score}%"></div></div>
+      <div class="card-params">
+        <div class="cp"><div class="cp-l">ילודה</div><div class="cp-v">${c.birthRate.toFixed(1)}</div></div>
+        <div class="cp"><div class="cp-l">ילדים</div><div class="cp-v">${c.youthPct}%</div></div>
+        <div class="cp"><div class="cp-l">צפיפות</div><div class="cp-v">${(c.density/1000).toFixed(1)}K</div></div>
+        <div class="cp"><div class="cp-l">פוליטי</div><div class="cp-v">${c.politicalDom}%</div></div>
+      </div>
+      <div class="card-cta">לחץ לפתיחת מפה עירונית ←</div>
+    </div>`).join('')}
+  </div>`;
+}
+
+// MAP
+let map = null;
+let mapMarkers = [];
+let currentMapCity = null;
+let currentLayerSection = 'optimal';
+
+function initMap() {
+  if (map) return;
+  map = L.map('map', { zoomControl: true }).setView([31.7800, 35.2170], 14);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19, attribution: '© OpenStreetMap contributors'
+  }).addTo(map);
+}
+
+function clearMarkers() {
+  mapMarkers.forEach(m => map.removeLayer(m));
+  mapMarkers = [];
+}
+
+function goToCity(name) {
+  switchStage('B');
+  setTimeout(() => loadMapCity(name), 100);
+}
+
+function loadMapCity(name) {
+  currentMapCity = name;
+  const cityBase = CITIES.find(c => c.name === name);
+  const detail = CITY_DETAIL[name];
+
+  initMap();
+  map.setView([cityBase.lat, cityBase.lng], 15);
+  setTimeout(() => map.invalidateSize(), 200);
+
+  document.getElementById('mb-name').textContent = name;
+  document.getElementById('mb-desc').textContent = detail ? detail.desc : cityBase.dist;
+  document.getElementById('mb-stats').innerHTML = `
+    <div class="mstat"><div class="mstat-l">ציון</div><div class="mstat-v">${cityBase.score || calcScore(cityBase)}/100</div></div>
+    <div class="mstat"><div class="mstat-l">ילודה</div><div class="mstat-v">${cityBase.birthRate}</div></div>
+    <div class="mstat"><div class="mstat-l">ילדים</div><div class="mstat-v">${cityBase.youthPct}%</div></div>
+    <div class="mstat"><div class="mstat-l">צפיפות</div><div class="mstat-v">${(cityBase.density/1000).toFixed(1)}K</div></div>
+    <div class="mstat"><div class="mstat-l">פוליטי</div><div class="mstat-v">${cityBase.politicalDom}%</div></div>
+    <div class="mstat"><div class="mstat-l">תחבורה</div><div class="mstat-v">${cityBase.transit.length} סוגים</div></div>
+  `;
+
+  // city switcher
+  const sw = document.getElementById('citySwitcher');
+  sw.innerHTML = top3Cities.length > 0 ? top3Cities.map(c =>
+    `<button class="csw${c.name===name?' active':''}" onclick="loadMapCity('${c.name}')">${c.name}</button>`
+  ).join('') : `<button class="csw active">${name}</button>`;
+
+  renderMapLayer(currentLayerSection);
+}
+
+function renderMapLayer(section) {
+  currentLayerSection = section;
+  const name = currentMapCity;
+  if (!name) return;
+  const detail = CITY_DETAIL[name];
+  clearMarkers();
+
+  if (!detail) return;
+  const items = detail[section] || [];
+  const content = document.getElementById('layerContent');
+
+  if (section === 'transit') {
+    items.forEach(p => {
+      const circle = L.circle([p.lat, p.lng], { radius: 100, color: '#4a9e6b', fillColor: '#4a9e6b', fillOpacity: 0.15, weight: 1.5 }).addTo(map);
+      const marker = L.circleMarker([p.lat, p.lng], { radius: 7, color: '#4a9e6b', fillColor: '#0f0f0f', fillOpacity: 1, weight: 2 })
+        .bindPopup(`<b>${p.name}</b><br>${p.sub}`).addTo(map);
+      mapMarkers.push(circle, marker);
+    });
+    content.innerHTML = items.map(p => `<div class="litem" onclick="map.setView([${p.lat},${p.lng}],17)">
+      <div class="litem-name">⬤ ${p.name}</div><div class="litem-sub">${p.sub}</div></div>`).join('');
+  } else if (section === 'public') {
+    items.forEach(p => {
+      const circle = L.circle([p.lat, p.lng], { radius: 100, color: '#7c6fcd', fillColor: '#7c6fcd', fillOpacity: 0.13, weight: 1.5 }).addTo(map);
+      const marker = L.circleMarker([p.lat, p.lng], { radius: 7, color: '#7c6fcd', fillColor: '#0f0f0f', fillOpacity: 1, weight: 2 })
+        .bindPopup(`<b>${p.name}</b><br>${p.sub}`).addTo(map);
+      mapMarkers.push(circle, marker);
+    });
+    content.innerHTML = items.map(p => `<div class="litem" onclick="map.setView([${p.lat},${p.lng}],17)">
+      <div class="litem-name">◆ ${p.name}</div><div class="litem-sub">${p.sub}</div></div>`).join('');
+  } else if (section === 'optimal') {
+    const starIcon = L.divIcon({ html: `<svg width="24" height="24" viewBox="0 0 24 24"><polygon points="12,2 14.5,9 22,9 16,13.5 18.5,21 12,16.5 5.5,21 8,13.5 2,9 9.5,9" fill="#d4a843" stroke="#000" stroke-width="1"/></svg>`, className: '', iconSize: [24, 24], iconAnchor: [12, 12] });
+    items.forEach(p => {
+      const marker = L.marker([p.lat, p.lng], { icon: starIcon })
+        .bindPopup(`<b>${p.name}</b><br><small>${p.reason}</small>`).addTo(map);
+      mapMarkers.push(marker);
+    });
+    content.innerHTML = `<div style="font-size:11px;color:#888;margin-bottom:12px;line-height:1.6">אתרים שעומדים בחיתוך של כל הפרמטרים — תחבורה, ציבור, הולכי רגל וייעוד קרקע.</div>` +
+      items.map(p => `<div class="opt-item" onclick="map.setView([${p.lat},${p.lng}],17)">
+        <div class="opt-name">★ ${p.name}</div>
+        <div class="opt-reason">${p.reason}</div></div>`).join('');
+  }
+}
+
+function showLayer(el, section) {
+  document.querySelectorAll('.ltab').forEach(x => x.classList.remove('active'));
+  el.classList.add('active');
+  renderMapLayer(section);
+}
+
+function switchStage(stage) {
+  document.getElementById('stageA').style.display = stage === 'A' ? 'flex' : 'none';
+  document.getElementById('stageB').style.display = stage === 'B' ? 'flex' : 'none';
+  document.getElementById('tabA').classList.toggle('active', stage === 'A');
+  document.getElementById('tabB').classList.toggle('active', stage === 'B');
+  if (stage === 'B' && map) setTimeout(() => map.invalidateSize(), 200);
+}
+</script>
+</body>
+</html>
