@@ -261,7 +261,7 @@ input.sr{position:absolute;width:100%;top:0;left:0;height:16px;opacity:0;cursor:
     </div>
     <div class="map-wrap">
       <div id="map"></div>
-      <button class="govmap-btn" id="govmapBtn" onclick="openGovmap()">Open in GOVMAP ↗</button>
+      <button class="govmap-btn" id="govmapBtn" onclick="openGovmap()" style="position:absolute;bottom:16px;right:16px;z-index:1000;padding:8px 14px;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;background:var(--black);color:#fff;border:none;cursor:pointer;font-family:Nunito,sans-serif">Open in GOVMAP ↗</button>
     </div>
   </div>
 </div>
@@ -523,8 +523,8 @@ function switchStage(s){
 function initMap(lat,lng,zoom){
   if(!map){
     map=L.map('map',{zoomControl:true}).setView([lat,lng],zoom);
-    L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png',{
-      maxZoom:19,attribution:'© Stadia Maps © OpenStreetMap'
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{
+      maxZoom:19,attribution:'© CARTO © OpenStreetMap'
     }).addTo(map);
   } else {map.setView([lat,lng],zoom);}
 }
