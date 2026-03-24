@@ -516,7 +516,12 @@ function switchStage(s){
   document.getElementById('stageB').style.display=s==='B'?'flex':'none';
   document.getElementById('tabA').classList.toggle('active',s==='A');
   document.getElementById('tabB').classList.toggle('active',s==='B');
-  if(s==='B'&&map)setTimeout(()=>map.invalidateSize(),200);
+  if(s==='B'){
+    setTimeout(function(){
+      if(!currentCity){loadCity('Rehovot');}
+      else if(map){map.invalidateSize();}
+    },300);
+  }
 }
 
 // ---- MAP ----
