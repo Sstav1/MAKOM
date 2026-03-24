@@ -212,8 +212,12 @@ input.sr{position:absolute;width:100%;top:0;left:0;height:16px;opacity:0;cursor:
         <div class="focus-note">Select city type to prioritize — all cities still appear</div>
         <div class="tg" id="tg-type">
           <button class="tb" data-v="jewish">Jewish</button>
-          <button class="tb" data-v="arab">Arab</button>
           <button class="tb" data-v="mixed">Mixed</button>
+        </div>
+        <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--gray)">
+          <div style="font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px">Include Arab Cities</div>
+          <div style="font-size:11px;color:var(--muted);font-weight:500;margin-bottom:7px;line-height:1.4">Arab cities are excluded by default. Enable to include them.</div>
+          <button class="tb" id="arab-btn" data-v="arab" onclick="toggleArab(this)">+ Arab Cities</button>
         </div>
       </div>
     </div>
@@ -361,9 +365,16 @@ document.querySelectorAll('#tg-type .tb').forEach(b=>b.addEventListener('click',
   if(focusTypes.has(v)){focusTypes.delete(v);b.classList.remove('on')}else{focusTypes.add(v);b.classList.add('on')}
 }));
 
+let includeArab=false;
+function toggleArab(btn){
+  includeArab=!includeArab;
+  btn.classList.toggle('on',includeArab);
+  btn.textContent=includeArab?'✓ Arab Cities':'+ Arab Cities';
+}
+
 function calcScore(c,t){
   let s=0;
-  if(c.coalPct!==null){const het=Math.abs(c.coalPct-50);s+=Math.max(0,(25-het)/25)*25;}else{s+=20;}
+  if(c.coalPct!==null){const het=Math.abs(c.coalPct-50);s+=Math.max(0,(25-het)/25)*25;}else{s+=Math.max(0,(25-10)/25)*25;}
   s+=Math.min(c.birthRate/Math.max(t.birth,0.1),1.5)/1.5*20;
   s+=Math.min(c.youthPct/Math.max(t.youth,1),1.5)/1.5*20;
   s+=(densMin===0?1:densMin===4000?Math.min(c.density/8000,1):Math.min(c.density/15000,1))*20;
@@ -381,6 +392,7 @@ function doSearch(){
   const dl=c=>c.density<4000?'Low':c.density<8000?'Medium':'High';
 
   const filtered=CITIES.filter(c=>{
+    if(c.type==='arab'&&!includeArab)return false;
     if(c.type!=='arab'&&c.coalPct!==null&&Math.max(c.coalPct,100-c.coalPct)>maxDom)return false;
     if(c.birthRate<birth||c.youthPct<youth||c.density<densMin||c.pop<pop)return false;
     return true;
